@@ -1,6 +1,10 @@
 
 import './App.css'
-// import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Navbar from './Components/Navbar'
+import Home from './Pages/Home'
+import About from './Pages/About'
+import Footer from './Components/Footer'
 
 
 
@@ -8,9 +12,14 @@ function App() {
 
   return (
     <div>
-      <div>
-        <h1 className='text-red-500'>Divine Support Solutions</h1>
-      </div>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/about' element={<About />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
     </div>
   )
 }
