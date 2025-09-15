@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../assets/logo.png"
+import logo from "../assets/logo.png";
+import ApplyModal from "./ApplyModal";
+
+// ⬇️ Adjust this path to where you saved ApplyModal.jsx
 
 const LABELS = ["Home", "About", "Services", "Resources", "Contact"];
 const navLinks = LABELS.map((l) => ({
@@ -12,8 +15,9 @@ const navLinks = LABELS.map((l) => ({
 }));
 
 export default function Navbar() {
-    const [open, setOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
+    const [open, setOpen] = useState(false);          // mobile drawer
+    const [scrolled, setScrolled] = useState(false);  // header shadow state
+    const [applyOpen, setApplyOpen] = useState(false); // apply modal
 
     // Scroll state for header animation
     useEffect(() => {
@@ -23,16 +27,23 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    // Close on ESC + lock body scroll when drawer is open
+    // Close on ESC + lock body scroll when drawer OR modal is open
     useEffect(() => {
         const onKey = (e) => e.key === "Escape" && setOpen(false);
         document.addEventListener("keydown", onKey);
-        document.body.style.overflow = open ? "hidden" : "";
+        document.body.style.overflow = open || applyOpen ? "hidden" : "";
         return () => {
             document.removeEventListener("keydown", onKey);
             document.body.style.overflow = "";
         };
-    }, [open]);
+    }, [open, applyOpen]);
+
+    const openApply = () => setApplyOpen(true);
+    const openApplyFromDrawer = () => {
+        // Close drawer then open modal after the slide-out animation
+        setOpen(false);
+        setTimeout(() => setApplyOpen(true), 300);
+    };
 
     return (
         <header className="sticky top-0 z-50 w-full px-4 py-4">
@@ -75,14 +86,15 @@ export default function Navbar() {
                         ))}
                     </ul>
 
-                    {/* Right: Apply (desktop) */}
+                    {/* Right: Apply (desktop) -> opens modal */}
                     <div className="hidden md:flex">
-                        <a
-                            href="/apply"
+                        <button
+                            type="button"
+                            onClick={openApply}
                             className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-2.5 text-white text-sm font-semibold shadow-sm hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 transition"
                         >
                             Apply <span aria-hidden>↗</span>
-                        </a>
+                        </button>
                     </div>
 
                     {/* Mobile hamburger */}
@@ -98,7 +110,7 @@ export default function Navbar() {
                 </div>
             </motion.nav>
 
-            {/* MOBILE DRAWER (70% width, glass effect, slide from right) */}
+            {/* MOBILE DRAWER */}
             <AnimatePresence>
                 {open && (
                     <motion.div
@@ -113,9 +125,9 @@ export default function Navbar() {
                             role="dialog"
                             aria-modal="true"
                             className="absolute right-0 top-0 h-full w-[70%] max-w-sm border-l border-white/30 bg-white/20 backdrop-blur-xl shadow-2xl"
-                            initial={{ x: "100%" }}     // start off-screen to the RIGHT
-                            animate={{ x: 0 }}          // slide IN
-                            exit={{ x: "100%" }}        // slide OUT to the RIGHT
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "100%" }}
                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             onClick={(e) => e.stopPropagation()}
                         >
@@ -157,19 +169,30 @@ export default function Navbar() {
                             </motion.ul>
 
                             <div className="px-4 pt-2">
-                                <a
-                                    href="/apply"
-                                    onClick={() => setOpen(false)}
+                                {/* Apply (mobile) -> opens modal */}
+                                <button
+                                    type="button"
+                                    onClick={openApplyFromDrawer}
                                     className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-white text-sm font-semibold shadow-sm hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
                                 >
                                     Apply <span aria-hidden>↗</span>
-                                </a>
+                                </button>
                             </div>
                         </motion.aside>
                     </motion.div>
                 )}
             </AnimatePresence>
 
+            {/* Apply Modal (global) */}
+            <ApplyModal
+                open={applyOpen}
+                onClose={() => setApplyOpen(false)}
+                roles={["Registered Nurse", "Behavioral Specialist", "Program Coordinator", "Caregiver"]}
+                onSubmit={(data) => {
+                    console.log("Application:", data);
+                    setApplyOpen(false);
+                }}
+            />
         </header>
     );
 }

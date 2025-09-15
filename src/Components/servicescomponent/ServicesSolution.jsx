@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
-// Import your local images here
+// Local images
 import img1 from "../../assets/services/services.png";
 import img2 from "../../assets/services/services.png";
 import img3 from "../../assets/services/services.png";
@@ -23,12 +23,10 @@ const sectionV = {
         transition: { duration: 0.6, ease, when: "beforeChildren", staggerChildren: 0.08 },
     },
 };
-
 const headerV = {
     hidden: { opacity: 0, y: 12 },
     show: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
 };
-
 const cardV = {
     hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
     show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.55, ease } },
@@ -38,42 +36,79 @@ export default function ServicesSolution() {
     const cards = [
         {
             title: "Residential Services",
-            text: "We provide safe, supportive community living homes, respite care, and supported living to help individuals thrive.",
+            text:
+                "We provide safe, supportive community living homes, respite care, and supported living to help individuals thrive.",
             icon: HomeIcon,
             image: img1,
             href: "/services/residential",
         },
         {
             title: "Personal Support",
-            text: "From daily living assistance to transportation and one-on-one care, we ensure every individual's needs are met with dignity.",
+            text:
+                "From daily living assistance to transportation and one-on-one care, we ensure every individual's needs are met with dignity.",
             icon: HeartHandsIcon,
             image: img2,
             href: "/services/personal-support",
         },
         {
             title: "Nursing Support",
-            text: "Skilled nursing, medication monitoring, and coordination of medical appointments to keep individuals healthy and safe.",
+            text:
+                "Skilled nursing, medication monitoring, and coordination of medical appointments to keep individuals healthy and safe.",
             icon: StethoscopeIcon,
             image: img3,
             href: "/services/nursing-support",
         },
+
+        // ✅ UPDATED: accurate text + icon
+        {
+            title: "Supported Living",
+            text:
+                "Person-centered assistance so people can live in their own homes with maximum independence—skills coaching (meals, budgeting, hygiene), medication reminders, and support for community participation.",
+            icon: HomeHeartIcon,            // new icon
+            image: img3,
+            href: "/services/supported-living",
+        },
+
+        // ✅ UPDATED: accurate text + icon
+        {
+            title: "Respite Care",
+            text:
+                "Short-term planned or emergency care that gives family caregivers a break. Flexible in-home or out-of-home options with 24/7 supervision, personal care, and health monitoring.",
+            icon: BedTimeIcon,              // new icon
+            image: img3,
+            href: "/services/respite-care",
+        },
+
+        // ✅ UPDATED: accurate text + icon
+        {
+            title: "Transportation",
+            text:
+                "Door-to-door, wheelchair-accessible rides to medical appointments, employment, day programs, and community activities—operated by trained, safety-certified drivers.",
+            icon: VanIcon,                  // new icon
+            image: img3,
+            href: "/services/transportation",
+        },
+
         {
             title: "Community Development",
-            text: "Engaging programs that build independence through recreation, education, and community integration.",
+            text:
+                "Engaging programs that build independence through recreation, education, and community integration.",
             icon: UsersIcon,
             image: img4,
             href: "/services/community-development",
         },
         {
             title: "Employment Services",
-            text: "Job coaching, training, and support to help individuals gain confidence and succeed in the workplace.",
+            text:
+                "Job coaching, training, and support to help individuals gain confidence and succeed in the workplace.",
             icon: BriefcaseLockIcon,
             image: img5,
             href: "/services/employment-services",
         },
         {
             title: "Day Habilitation",
-            text: "Structured day programs that promote learning, friendships, and meaningful community participation.",
+            text:
+                "Structured day programs that promote learning, friendships, and meaningful community participation.",
             icon: SunIcon,
             image: img6,
             href: "/services/day-habilitation",
@@ -131,7 +166,6 @@ export default function ServicesSolution() {
 // --------------------------------------------
 
 function ServiceCard({ image, title, text, Icon, href }) {
-    // Subtle 3D tilt on hover using pointer position
     const ref = useRef(null);
     const rx = useMotionValue(0);
     const ry = useMotionValue(0);
@@ -149,18 +183,16 @@ function ServiceCard({ image, title, text, Icon, href }) {
         ry.set((py - 0.5) * 30);
     };
 
-    const resetTilt = () => {
-        rx.set(0);
-        ry.set(0);
-    };
-
     return (
         <motion.article
             ref={ref}
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
             variants={cardV}
             onMouseMove={handleMove}
-            onMouseLeave={resetTilt}
+            onMouseLeave={() => {
+                rx.set(0);
+                ry.set(0);
+            }}
             className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden will-change-transform"
         >
             {/* Image */}
@@ -209,7 +241,12 @@ function ServiceCard({ image, title, text, Icon, href }) {
                 >
                     <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/10 transition-colors duration-300" />
                     Read more
-                    <motion.span aria-hidden initial={{ x: 0 }} whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 250, damping: 16 }}>
+                    <motion.span
+                        aria-hidden
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 4 }}
+                        transition={{ type: "spring", stiffness: 250, damping: 16 }}
+                    >
                         <ArrowRight className="h-3.5 w-3.5" />
                     </motion.span>
                 </motion.a>
@@ -303,3 +340,48 @@ function SunIcon({ className }) {
     );
 }
 SunIcon.propTypes = { className: PropTypes.string };
+
+/* ---------- NEW, accurate icons ---------- */
+
+// House with heart (Supported Living)
+function HomeHeartIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            <path d="M3 11l9-7 9 7" />
+            <path d="M5 10v9a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-9" />
+            {/* heart */}
+            <path d="M12 16.2c-1.5-1-2.7-2.1-2.7-3.5a2 2 0 0 1 3.7-1.1A2 2 0 0 1 16.7 12.7c0 1.4-1.2 2.5-2.7 3.5" />
+        </svg>
+    );
+}
+HomeHeartIcon.propTypes = { className: PropTypes.string };
+
+// Bed + clock (Respite Care)
+function BedTimeIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            {/* bed */}
+            <path d="M3 12V7h8a3 3 0 0 1 3 3v2H3z" />
+            <circle cx="6.2" cy="9.2" r="1.2" />
+            <path d="M3 15v2M21 15v2M3 17h18" />
+            {/* clock */}
+            <circle cx="17.5" cy="7.5" r="2.7" />
+            <path d="M17.5 6v1.4l1 .6" />
+        </svg>
+    );
+}
+BedTimeIcon.propTypes = { className: PropTypes.string };
+
+// Accessible van (Transportation)
+function VanIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            <rect x="3" y="9" width="14" height="6" rx="1.5" />
+            <path d="M17 11h4v4h-4" />
+            <path d="M6 9h7l3 2" />
+            <circle cx="7.5" cy="16" r="1.6" />
+            <circle cx="16.5" cy="16" r="1.6" />
+        </svg>
+    );
+}
+VanIcon.propTypes = { className: PropTypes.string };
