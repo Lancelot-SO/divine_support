@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../assets/logo.png"
 
-const LABELS = ["Home", "About", "Services", "Resources", "Contacts"];
+const LABELS = ["Home", "About", "Services", "Resources", "Contact"];
 const navLinks = LABELS.map((l) => ({
     name: l,
     path: l === "Home" ? "/" : `/${l.toLowerCase().replace(/\s+/g, "-")}`,
@@ -78,7 +78,7 @@ export default function Navbar() {
                     {/* Right: Apply (desktop) */}
                     <div className="hidden md:flex">
                         <a
-                            href="#apply"
+                            href="/apply"
                             className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-2.5 text-white text-sm font-semibold shadow-sm hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 transition"
                         >
                             Apply <span aria-hidden>↗</span>
@@ -158,7 +158,7 @@ export default function Navbar() {
 
                             <div className="px-4 pt-2">
                                 <a
-                                    href="#apply"
+                                    href="/apply"
                                     onClick={() => setOpen(false)}
                                     className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-white text-sm font-semibold shadow-sm hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
                                 >

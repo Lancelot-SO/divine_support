@@ -1,0 +1,305 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
+import React, { useRef } from "react";
+import PropTypes from "prop-types";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+
+// Import your local images here
+import img1 from "../../assets/services/services.png";
+import img2 from "../../assets/services/services.png";
+import img3 from "../../assets/services/services.png";
+import img4 from "../../assets/services/services.png";
+import img5 from "../../assets/services/services.png";
+import img6 from "../../assets/services/services.png";
+
+const ease = [0.22, 1, 0.36, 1];
+
+// Section + Stagger
+const sectionV = {
+    hidden: { opacity: 0, y: 10 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.6, ease, when: "beforeChildren", staggerChildren: 0.08 },
+    },
+};
+
+const headerV = {
+    hidden: { opacity: 0, y: 12 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
+};
+
+const cardV = {
+    hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
+    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.55, ease } },
+};
+
+export default function ServicesSolution() {
+    const cards = [
+        {
+            title: "Residential Services",
+            text: "We provide safe, supportive community living homes, respite care, and supported living to help individuals thrive.",
+            icon: HomeIcon,
+            image: img1,
+            href: "/services/residential",
+        },
+        {
+            title: "Personal Support",
+            text: "From daily living assistance to transportation and one-on-one care, we ensure every individual's needs are met with dignity.",
+            icon: HeartHandsIcon,
+            image: img2,
+            href: "/services/personal-support",
+        },
+        {
+            title: "Nursing Support",
+            text: "Skilled nursing, medication monitoring, and coordination of medical appointments to keep individuals healthy and safe.",
+            icon: StethoscopeIcon,
+            image: img3,
+            href: "/services/nursing-support",
+        },
+        {
+            title: "Community Development",
+            text: "Engaging programs that build independence through recreation, education, and community integration.",
+            icon: UsersIcon,
+            image: img4,
+            href: "/services/community-development",
+        },
+        {
+            title: "Employment Services",
+            text: "Job coaching, training, and support to help individuals gain confidence and succeed in the workplace.",
+            icon: BriefcaseLockIcon,
+            image: img5,
+            href: "/services/employment-services",
+        },
+        {
+            title: "Day Habilitation",
+            text: "Structured day programs that promote learning, friendships, and meaningful community participation.",
+            icon: SunIcon,
+            image: img6,
+            href: "/services/day-habilitation",
+        },
+    ];
+
+    return (
+        <motion.section
+            className="w-full bg-white"
+            variants={sectionV}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+        >
+            <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-16">
+                {/* Header */}
+                <motion.div className="text-center mb-10 md:mb-14" variants={headerV}>
+                    <motion.p
+                        className="text-amber-500 font-semibold tracking-wide uppercase text-sm"
+                        initial={{ letterSpacing: "0.05em" }}
+                        whileInView={{ letterSpacing: "0.12em" }}
+                        transition={{ duration: 0.9, ease }}
+                    >
+                        Explore Medical Department
+                    </motion.p>
+                    <motion.h2
+                        className="mt-3 text-3xl/tight sm:text-4xl/tight lg:text-5xl/tight font-extrabold text-gray-900"
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease }}
+                    >
+                        Complete Health Solutions Because
+                        <br className="hidden sm:block" /> You Deserve The Best
+                    </motion.h2>
+                </motion.div>
+
+                {/* Cards Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+                    {cards.map((c) => (
+                        <ServiceCard
+                            key={c.title}
+                            image={c.image}
+                            title={c.title}
+                            text={c.text}
+                            Icon={c.icon}
+                            href={c.href}
+                        />
+                    ))}
+                </div>
+            </div>
+        </motion.section>
+    );
+}
+
+// --------------------------------------------
+
+function ServiceCard({ image, title, text, Icon, href }) {
+    // Subtle 3D tilt on hover using pointer position
+    const ref = useRef(null);
+    const rx = useMotionValue(0);
+    const ry = useMotionValue(0);
+    const x = useSpring(rx, { stiffness: 140, damping: 12 });
+    const y = useSpring(ry, { stiffness: 140, damping: 12 });
+    const rotateX = useTransform(y, [-15, 15], [8, -8]);
+    const rotateY = useTransform(x, [-15, 15], [-8, 8]);
+
+    const handleMove = (e) => {
+        const rect = ref.current?.getBoundingClientRect();
+        if (!rect) return;
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        rx.set((px - 0.5) * 30);
+        ry.set((py - 0.5) * 30);
+    };
+
+    const resetTilt = () => {
+        rx.set(0);
+        ry.set(0);
+    };
+
+    return (
+        <motion.article
+            ref={ref}
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            variants={cardV}
+            onMouseMove={handleMove}
+            onMouseLeave={resetTilt}
+            className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden will-change-transform"
+        >
+            {/* Image */}
+            <div className="relative">
+                <a href={href || "/"} className="block" aria-label={`${title} image link`}>
+                    <motion.img
+                        src={image}
+                        alt="service"
+                        className="h-56 w-full object-cover"
+                        loading="lazy"
+                        initial={{ scale: 1.03, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.9, ease }}
+                        whileHover={{ scale: 1.04 }}
+                    />
+                </a>
+
+                {/* Floating circle icon */}
+                <motion.div
+                    className="absolute left-1/2 -bottom-6 -translate-x-1/2"
+                    initial={{ y: 12, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, ease }}
+                >
+                    <motion.div
+                        className="grid h-14 w-14 place-items-center rounded-full bg-white ring-1 ring-gray-200 shadow-md"
+                        animate={{ y: [0, -3, 0] }}
+                        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+                        style={{ transform: "translateZ(40px)" }}
+                    >
+                        <Icon className="h-7 w-7 text-amber-500" />
+                    </motion.div>
+                </motion.div>
+            </div>
+
+            {/* Copy */}
+            <div className="px-6 pt-10 pb-6 text-center">
+                <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+                <p className="mt-2 text-sm text-gray-600 leading-relaxed">{text}</p>
+
+                <motion.a
+                    href={href || "#"}
+                    className="group relative mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-xs font-semibold text-white shadow focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                >
+                    <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/10 transition-colors duration-300" />
+                    Read more
+                    <motion.span aria-hidden initial={{ x: 0 }} whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 250, damping: 16 }}>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                    </motion.span>
+                </motion.a>
+            </div>
+        </motion.article>
+    );
+}
+
+ServiceCard.propTypes = {
+    image: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    Icon: PropTypes.elementType.isRequired,
+    href: PropTypes.string,
+};
+
+// --------- Inline Icons ---------
+function ArrowRight({ className }) {
+    return (
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+            <path d="M4 10h10" strokeLinecap="round" />
+            <path d="M10 6l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+}
+ArrowRight.propTypes = { className: PropTypes.string };
+
+function HomeIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            <path d="M3 11l9-7 9 7" />
+            <path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9" />
+            <path d="M10 21v-6h4v6" />
+        </svg>
+    );
+}
+HomeIcon.propTypes = { className: PropTypes.string };
+
+function HeartHandsIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            <path d="M12 13s-3.5-2.4-3.5-4.5A2.5 2.5 0 0 1 12 6a2.5 2.5 0 0 1 3.5 2.5C15.5 10.6 12 13 12 13z" />
+            <path d="M7 12.5c-1.6 0-2.5-1.5-2.5-3V8A1.5 1.5 0 0 1 6 6.5h.5C7.3 6.5 8 7.2 8 8v3.8" />
+            <path d="M17 12.5c1.6 0 2.5-1.5 2.5-3V8A1.5 1.5 0 0 0 18 6.5h-.5C16.7 6.5 16 7.2 16 8v3.8" />
+        </svg>
+    );
+}
+HeartHandsIcon.propTypes = { className: PropTypes.string };
+
+function StethoscopeIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            <path d="M6 5v4a4 4 0 0 0 8 0V5" />
+            <path d="M10 13v3a5 5 0 0 0 10 0v-1" />
+            <circle cx="19" cy="15" r="2" />
+        </svg>
+    );
+}
+StethoscopeIcon.propTypes = { className: PropTypes.string };
+
+function UsersIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            <circle cx="8" cy="11" r="3" />
+            <circle cx="17" cy="8" r="2.5" />
+            <path d="M4 19a4 4 0 0 1 4-4h0a4 4 0 0 1 4 4" />
+            <path d="M14 19a4 4 0 0 1 4-4h0a4 4 0 0 1 4 4" />
+        </svg>
+    );
+}
+UsersIcon.propTypes = { className: PropTypes.string };
+
+function BriefcaseLockIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            <rect x="3" y="7" width="18" height="11" rx="2" />
+            <path d="M9 7V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" />
+            <circle cx="12" cy="13" r="1.6" />
+            <path d="M12 14.6v1.8" />
+        </svg>
+    );
+}
+BriefcaseLockIcon.propTypes = { className: PropTypes.string };
+
+function SunIcon({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className}>
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l-1.5-1.5M20.5 20.5L19 19M19 5l1.5-1.5M5 19L3.5 20.5" />
+        </svg>
+    );
+}
+SunIcon.propTypes = { className: PropTypes.string };

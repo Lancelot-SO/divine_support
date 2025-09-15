@@ -206,9 +206,11 @@ function SupportCard() {
                         operations@divinesupportservicesinc.org
                     </a>
                 </div>
-                <div className="flex items-start gap-2">
+                <div className="flex flex-col items-start gap-2">
                     <span className="text-gray-500">Phone no :</span>
-                    <span>+1 (856) 879-4171 | +1 (410) 905-7473</span>
+                    <span>+1 (856) 879-4171 </span>
+                    <pan>+1 (410) 905-7473</pan>
+                    <span>+1 (443) 248-5410</span>
                 </div>
             </div>
         </motion.div>
@@ -222,7 +224,7 @@ FooterLink.propTypes = {
     href: PropTypes.string,
 };
 FooterLink.defaultProps = {
-    href: "#",
+    href: "/",
 };
 
 BottomLink.propTypes = {
