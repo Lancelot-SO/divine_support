@@ -8,6 +8,7 @@ import Footer from './Components/Footer'
 import Services from './Pages/Services'
 import Resources from './Pages/Resources'
 import Contact from './Pages/Contact'
+import ResidentialDisplay from './Pages/ServicesDisplay/ResidentialDisplay'
 
 
 
@@ -23,6 +24,7 @@ function App() {
           <Route path='/services' element={<Services />} />
           <Route path='/resources' element={<Resources />} />
           <Route path='/contact' element={<Contact />} />
+          <Route path='/residential' element={<ResidentialDisplay />} />
         </Routes>
         <Footer />
       </BrowserRouter>

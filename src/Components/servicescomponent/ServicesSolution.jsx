@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
 // Local images
 import img1 from "../../assets/services/services.png";
@@ -12,26 +11,58 @@ import img4 from "../../assets/services/services.png";
 import img5 from "../../assets/services/services.png";
 import img6 from "../../assets/services/services.png";
 
-const ease = [0.22, 1, 0.36, 1];
+/* ------------------------- Reveal-on-scroll helper ------------------------- */
+/** Adds Tailwind classes when the element enters the viewport */
+function Reveal({
+    children,
+    className = "",
+    once = true,
+    amount = 0.2,
+    from = "opacity-0 translate-y-3 blur-[6px]",
+    to = "opacity-100 translate-y-0 blur-0",
+    delay = 0, // ms
+    duration = 700, // ms
+    as: Tag = "div",
+}) {
+    const ref = useRef(null);
+    const [visible, setVisible] = useState(false);
 
-// Section + Stagger
-const sectionV = {
-    hidden: { opacity: 0, y: 10 },
-    show: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.6, ease, when: "beforeChildren", staggerChildren: 0.08 },
-    },
-};
-const headerV = {
-    hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
-};
-const cardV = {
-    hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
-    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.55, ease } },
-};
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const obs = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setVisible(true);
+                    if (once) obs.unobserve(el);
+                } else if (!once) {
+                    setVisible(false);
+                }
+            },
+            { threshold: amount }
+        );
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, [once, amount]);
 
+    return (
+        <Tag
+            ref={ref}
+            className={[
+                visible ? to : from,
+                "transition-all",
+                "will-change-transform will-change-opacity",
+                "[transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+                className,
+            ].join(" ")}
+            style={{ transitionDuration: `${duration}ms`, transitionDelay: `${delay}ms` }}
+        >
+            {children}
+        </Tag>
+    );
+}
+
+/* ---------------------------- Component ---------------------------- */
 export default function ServicesSolution() {
     const cards = [
         {
@@ -40,7 +71,7 @@ export default function ServicesSolution() {
                 "We provide safe, supportive community living homes, respite care, and supported living to help individuals thrive.",
             icon: HomeIcon,
             image: img1,
-            href: "/services/residential",
+            href: "/residential",
         },
         {
             title: "Personal Support",
@@ -58,37 +89,33 @@ export default function ServicesSolution() {
             image: img3,
             href: "/services/nursing-support",
         },
-
         // ✅ UPDATED: accurate text + icon
         {
             title: "Supported Living",
             text:
                 "Person-centered assistance so people can live in their own homes with maximum independence—skills coaching (meals, budgeting, hygiene), medication reminders, and support for community participation.",
-            icon: HomeHeartIcon,            // new icon
+            icon: HomeHeartIcon,
             image: img3,
             href: "/services/supported-living",
         },
-
         // ✅ UPDATED: accurate text + icon
         {
             title: "Respite Care",
             text:
                 "Short-term planned or emergency care that gives family caregivers a break. Flexible in-home or out-of-home options with 24/7 supervision, personal care, and health monitoring.",
-            icon: BedTimeIcon,              // new icon
+            icon: BedTimeIcon,
             image: img3,
             href: "/services/respite-care",
         },
-
         // ✅ UPDATED: accurate text + icon
         {
             title: "Transportation",
             text:
                 "Door-to-door, wheelchair-accessible rides to medical appointments, employment, day programs, and community activities—operated by trained, safety-certified drivers.",
-            icon: VanIcon,                  // new icon
+            icon: VanIcon,
             image: img3,
             href: "/services/transportation",
         },
-
         {
             title: "Community Development",
             text:
@@ -116,116 +143,99 @@ export default function ServicesSolution() {
     ];
 
     return (
-        <motion.section
-            className="w-full bg-white"
-            variants={sectionV}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-        >
+        <section className="w-full bg-white">
             <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-16">
                 {/* Header */}
-                <motion.div className="text-center mb-10 md:mb-14" variants={headerV}>
-                    <motion.p
-                        className="text-amber-500 font-semibold tracking-wide uppercase text-sm"
-                        initial={{ letterSpacing: "0.05em" }}
-                        whileInView={{ letterSpacing: "0.12em" }}
-                        transition={{ duration: 0.9, ease }}
-                    >
-                        Explore Medical Department
-                    </motion.p>
-                    <motion.h2
-                        className="mt-3 text-3xl/tight sm:text-4xl/tight lg:text-5xl/tight font-extrabold text-gray-900"
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease }}
-                    >
-                        Complete Health Solutions Because
-                        <br className="hidden sm:block" /> You Deserve The Best
-                    </motion.h2>
-                </motion.div>
+                <div className="text-center mb-10 md:mb-14">
+                    <Reveal>
+                        <p className="text-amber-500 font-semibold tracking-[0.12em] uppercase text-sm">
+                            Explore Medical Department
+                        </p>
+                    </Reveal>
+                    <Reveal delay={80}>
+                        <h2 className="mt-3 text-3xl/tight sm:text-4xl/tight lg:text-5xl/tight font-extrabold text-gray-900">
+                            Complete Health Solutions Because
+                            <br className="hidden sm:block" /> You Deserve The Best
+                        </h2>
+                    </Reveal>
+                </div>
 
                 {/* Cards Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
-                    {cards.map((c) => (
-                        <ServiceCard
-                            key={c.title}
-                            image={c.image}
-                            title={c.title}
-                            text={c.text}
-                            Icon={c.icon}
-                            href={c.href}
-                        />
+                    {cards.map((c, i) => (
+                        <Reveal key={c.title} delay={i * 90}>
+                            <ServiceCard
+                                image={c.image}
+                                title={c.title}
+                                text={c.text}
+                                Icon={c.icon}
+                                href={c.href}
+                            />
+                        </Reveal>
                     ))}
                 </div>
             </div>
-        </motion.section>
+        </section>
     );
 }
 
-// --------------------------------------------
-
+/* ----------------------------- Card ----------------------------- */
 function ServiceCard({ image, title, text, Icon, href }) {
+    // Vanilla 3D tilt (no Framer)
     const ref = useRef(null);
-    const rx = useMotionValue(0);
-    const ry = useMotionValue(0);
-    const x = useSpring(rx, { stiffness: 140, damping: 12 });
-    const y = useSpring(ry, { stiffness: 140, damping: 12 });
-    const rotateX = useTransform(y, [-15, 15], [8, -8]);
-    const rotateY = useTransform(x, [-15, 15], [-8, 8]);
+    const [rx, setRx] = useState(0);
+    const [ry, setRy] = useState(0);
 
     const handleMove = (e) => {
         const rect = ref.current?.getBoundingClientRect();
         if (!rect) return;
-        const px = (e.clientX - rect.left) / rect.width;
-        const py = (e.clientY - rect.top) / rect.height;
-        rx.set((px - 0.5) * 30);
-        ry.set((py - 0.5) * 30);
+        const px = (e.clientX - rect.left) / rect.width;  // 0..1
+        const py = (e.clientY - rect.top) / rect.height;  // 0..1
+        const max = 8; // deg
+        setRy((px - 0.5) * max * 2);  // rotateY
+        setRx((0.5 - py) * max * 2);  // rotateX
+    };
+
+    const resetTilt = () => {
+        setRx(0);
+        setRy(0);
     };
 
     return (
-        <motion.article
+        <article
             ref={ref}
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            variants={cardV}
             onMouseMove={handleMove}
-            onMouseLeave={() => {
-                rx.set(0);
-                ry.set(0);
+            onMouseLeave={resetTilt}
+            className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden will-change-transform
+                 transition-transform duration-300"
+            style={{
+                transform: `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg)`,
+                transformStyle: "preserve-3d",
             }}
-            className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden will-change-transform"
         >
             {/* Image */}
-            <div className="relative">
+            <div className="relative group">
                 <a href={href || "/"} className="block" aria-label={`${title} image link`}>
-                    <motion.img
+                    <img
                         src={image}
                         alt="service"
-                        className="h-56 w-full object-cover"
-                        loading="lazy"
-                        initial={{ scale: 1.03, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.9, ease }}
-                        whileHover={{ scale: 1.04 }}
+                        className="h-56 w-full object-cover opacity-0 translate-y-2 blur-[2px]
+                       group-[.appeared]:opacity-100 group-[.appeared]:translate-y-0 group-[.appeared]:blur-0
+                       transition-all duration-700"
+                        onLoad={(e) => e.currentTarget.parentElement?.parentElement?.classList.add("appeared")}
                     />
                 </a>
 
                 {/* Floating circle icon */}
-                <motion.div
-                    className="absolute left-1/2 -bottom-6 -translate-x-1/2"
-                    initial={{ y: 12, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, ease }}
-                >
-                    <motion.div
-                        className="grid h-14 w-14 place-items-center rounded-full bg-white ring-1 ring-gray-200 shadow-md"
-                        animate={{ y: [0, -3, 0] }}
-                        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+                <div className="absolute left-1/2 -bottom-6 -translate-x-1/2">
+                    <div
+                        className="grid h-14 w-14 place-items-center rounded-full bg-white ring-1 ring-gray-200 shadow-md
+                       animate-bounce"
                         style={{ transform: "translateZ(40px)" }}
                     >
                         <Icon className="h-7 w-7 text-amber-500" />
-                    </motion.div>
-                </motion.div>
+                    </div>
+                </div>
             </div>
 
             {/* Copy */}
@@ -233,25 +243,23 @@ function ServiceCard({ image, title, text, Icon, href }) {
                 <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
                 <p className="mt-2 text-sm text-gray-600 leading-relaxed">{text}</p>
 
-                <motion.a
+                <a
                     href={href || "#"}
-                    className="group relative mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-xs font-semibold text-white shadow focus:outline-none focus:ring-2 focus:ring-amber-500/50"
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                    className="group relative mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-4 py-2
+                     text-xs font-semibold text-white shadow focus:outline-none focus:ring-2 focus:ring-amber-500/50
+                     transition transform hover:-translate-y-0.5 active:scale-95"
                 >
                     <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/10 transition-colors duration-300" />
                     Read more
-                    <motion.span
+                    <span
                         aria-hidden
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 4 }}
-                        transition={{ type: "spring", stiffness: 250, damping: 16 }}
+                        className="inline-block transition-transform duration-300 group-hover:translate-x-1"
                     >
                         <ArrowRight className="h-3.5 w-3.5" />
-                    </motion.span>
-                </motion.a>
+                    </span>
+                </a>
             </div>
-        </motion.article>
+        </article>
     );
 }
 
@@ -263,7 +271,7 @@ ServiceCard.propTypes = {
     href: PropTypes.string,
 };
 
-// --------- Inline Icons ---------
+/* ----------------------------- Inline Icons ----------------------------- */
 function ArrowRight({ className }) {
     return (
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className={className}>

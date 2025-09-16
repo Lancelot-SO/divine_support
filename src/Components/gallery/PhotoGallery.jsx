@@ -63,7 +63,7 @@ export default function PhotoGallery({ images, title, ctaLabel, onViewMore }) {
             <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 py-10 md:py-14">
                 {/* Header */}
                 <div className="text-center mb-6 md:mb-8">
-                    <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
+                    <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-amber-500">
                         {title}
                     </h2>
                 </div>
@@ -115,7 +115,7 @@ export default function PhotoGallery({ images, title, ctaLabel, onViewMore }) {
                         onClick={onViewMore}           // (optional) keep your handler
                         whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className="inline-flex items-center justify-center rounded-full bg-gray-900 px-5 py-2 text-white text-sm font-semibold"
+                        className="inline-flex items-center justify-center rounded-full bg-amber-500 px-5 py-2 text-white text-sm font-semibold"
                     >
                         {ctaLabel}
                         <svg
@@ -160,7 +160,7 @@ export default function PhotoGallery({ images, title, ctaLabel, onViewMore }) {
                                 <button
                                     aria-label="Close"
                                     onClick={() => setOpenIndex(null)}
-                                    className="rounded-full bg-white/90 hover:bg-white text-gray-900 px-3 py-1.5 text-sm font-semibold shadow"
+                                    className="rounded-full bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 text-sm font-semibold shadow"
                                 >
                                     Close
                                 </button>
@@ -202,7 +202,7 @@ PhotoGallery.propTypes = {
 
 PhotoGallery.defaultProps = {
     images: defaultImages, // safe now: defined above
-    title: "Some notable Events",
+    title: "Some notable events",
     ctaLabel: "View More",
     onViewMore: () => { },
 };
