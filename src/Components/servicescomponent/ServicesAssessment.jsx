@@ -32,28 +32,28 @@ export default function ServicesAssessment({ items }) {
             body:
                 "Comprehensive intake and regular 45-day health reviews by our licensed nursing staff.",
             cta: "Request Nursing Support",
-            href: "#",
+            href: "/nursing-support",
         },
         {
             title: "Behavioral\nSupport Plans",
             body:
                 "Individualized assessments and strategies to encourage positive behaviors and community safety",
             cta: "Learn More",
-            href: "#",
+            href: "/personal-support",
         },
         {
             title: "Life Skills Training",
             body:
                 "Hands-on support with budgeting, hygiene, shopping, and daily living skills for greater independence.",
             cta: "Explore Programs",
-            href: "#",
+            href: "/supported-living",
         },
         {
             title: "Community\nIntegration",
             body:
                 "Guided participation in activities that reduce social anxiety, build friendships, and promote leadership.",
             cta: "Get Involved",
-            href: "#",
+            href: "/community-development",
         },
     ];
 

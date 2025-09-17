@@ -16,8 +16,8 @@ const slides = [
         id: 1,
         image: hero1,
         title:
-            "DDA Licensed providers for Individuals with Intellectual and Developmental Disabilities",
-        ctaText: "Explore Our Services",
+            "Complete Health Solutions Because You Deserve The Best",
+        ctaText: "EXPLORE OUR DDA SERVICES",
         ctaHref: "/services",
     },
     {

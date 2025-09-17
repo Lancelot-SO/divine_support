@@ -12,8 +12,10 @@ import {
     CheckCircle2,
 } from "lucide-react";
 
+
 // Swap to your own promo image
 import promoImg from "../../assets/home/cardimg.jpg";
+import Appointment from "../Appointment";
 
 /* ------------------------- Reveal-on-scroll helper ------------------------- */
 // Adds Tailwind classes when the element enters the viewport
@@ -57,6 +59,13 @@ function Reveal({ children, className = "", once = true, amount = 0.35 }) {
     );
 }
 
+Reveal.propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+    once: PropTypes.bool,
+    amount: PropTypes.number,
+};
+
 /* ---------------------------- Default Data --------------------------- */
 const defaultServices = [
     {
@@ -64,13 +73,20 @@ const defaultServices = [
         desc:
             "Community living group homes, respite care, and supported living designed to promote safety, independence, and comfort.",
         Icon: Home,
-        href: "#",
+        href: "/residential",
     },
     {
         title: "Personal Support",
         desc:
             "Community living group homes, respite care, and supported living designed to promote safety, independence, and comfort.",
         Icon: HandHeart,
+        href: "/personal-support",
+    },
+    {
+        title: "Community Development (CDS)",
+        desc:
+            "Community living group homes, respite care, and supported living designed to promote safety, independence, and comfort.",
+        Icon: Trees,
         href: "#",
     },
     {
@@ -78,15 +94,9 @@ const defaultServices = [
         desc:
             "Community living group homes, respite care, and supported living designed to promote safety, independence, and comfort.",
         Icon: Stethoscope,
-        href: "#",
+        href: "/nursing-support",
     },
-    {
-        title: "Community Development",
-        desc:
-            "Community living group homes, respite care, and supported living designed to promote safety, independence, and comfort.",
-        Icon: Trees,
-        href: "#",
-    },
+
     {
         title: "Employment Services",
         desc:
@@ -123,10 +133,10 @@ export default function CardServices({
     services = defaultServices,
     promo = defaultPromo,
 }) {
-    const list = (services && services.length ? services : defaultServices).slice(
-        0,
-        6
-    );
+    const list = (services && services.length ? services : defaultServices).slice(0, 6);
+
+    // ⬇️ modal state
+    const [showAppointment, setShowAppointment] = useState(false);
 
     return (
         <section className="mx-auto w-full max-w-8xl px-4 md:px-6 my-12">
@@ -165,10 +175,13 @@ export default function CardServices({
 
                     {/* Promo card spans 2 columns on larger screens */}
                     <Reveal className="sm:col-span-2">
-                        <PromoCard {...promo} />
+                        <PromoCard {...promo} onOpen={() => setShowAppointment(true)} />
                     </Reveal>
                 </div>
             </div>
+
+            {/* Modal mounted once and toggled with state */}
+            <Appointment open={showAppointment} onClose={() => setShowAppointment(false)} />
         </section>
     );
 }
@@ -235,7 +248,7 @@ ServiceCard.defaultProps = {
     href: "#",
 };
 
-function PromoCard({ image, headline, subcopy, bullets, ctaText, ctaHref }) {
+function PromoCard({ image, headline, subcopy, bullets, ctaText, ctaHref, onOpen }) {
     return (
         <article
             className="relative overflow-hidden h-full min-h-[320px] md:min-h-[360px] rounded-xl bg-black/20 ring-1 ring-white/20 shadow-[0_8px_24px_rgba(0,0,0,0.25)]
@@ -265,14 +278,26 @@ function PromoCard({ image, headline, subcopy, bullets, ctaText, ctaHref }) {
                     ))}
                 </ul>
 
-                <a
-                    href={ctaHref || "#"}
+                {/* CTA opens the modal */}
+                <button
+                    type="button"
+                    onClick={onOpen}
                     className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm
                      hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300
                      transition-colors"
                 >
                     {ctaText} <ArrowUpRight className="h-4 w-4" />
-                </a>
+                </button>
+
+                {/* If you must keep anchor for analytics instead:
+        <a
+          href={ctaHref || "#"}
+          onClick={(e) => { e.preventDefault(); onOpen?.(); }}
+          className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm
+                     hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 transition-colors"
+        >
+          {ctaText} <ArrowUpRight className="h-4 w-4" />
+        </a> */}
             </div>
         </article>
     );
@@ -285,6 +310,7 @@ PromoCard.propTypes = {
     bullets: PropTypes.arrayOf(PropTypes.node),
     ctaText: PropTypes.string,
     ctaHref: PropTypes.string,
+    onOpen: PropTypes.func, // NEW
 };
 
 PromoCard.defaultProps = {

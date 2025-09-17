@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import Breadcrumbs from "../../BreadCrumb";
-import Residential from "./Residential";
+import Personal from "./Personal";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -22,7 +22,7 @@ const itemV = {
     show: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
 };
 
-export default function MainResidential({ title = "Residential", image, className = "" }) {
+export default function MainPersonal({ title = "Personal Support", image, className = "" }) {
     return (
         <>
             <section className={`px-4 md:px-6 mx-auto max-w-8xl ${className}`}>
@@ -73,12 +73,12 @@ export default function MainResidential({ title = "Residential", image, classNam
                     </div>
                 </motion.div>
             </section>
-            <Residential />
+            <Personal />
         </>
     );
 }
 
-MainResidential.propTypes = {
+MainPersonal.propTypes = {
     title: PropTypes.string,
     image: PropTypes.string,
     className: PropTypes.string,

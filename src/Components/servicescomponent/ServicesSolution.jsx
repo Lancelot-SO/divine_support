@@ -62,6 +62,18 @@ function Reveal({
     );
 }
 
+Reveal.propTypes = {
+    children: PropTypes.node.isRequired,
+    className: PropTypes.string,
+    once: PropTypes.bool,
+    amount: PropTypes.number,
+    from: PropTypes.string,
+    to: PropTypes.string,
+    delay: PropTypes.number,
+    duration: PropTypes.number,
+    as: PropTypes.elementType,
+};
+
 /* ---------------------------- Component ---------------------------- */
 export default function ServicesSolution() {
     const cards = [
@@ -79,16 +91,17 @@ export default function ServicesSolution() {
                 "From daily living assistance to transportation and one-on-one care, we ensure every individual's needs are met with dignity.",
             icon: HeartHandsIcon,
             image: img2,
-            href: "/services/personal-support",
+            href: "/personal-support",
         },
         {
-            title: "Nursing Support",
+            title: "Community Development(CDS)",
             text:
-                "Skilled nursing, medication monitoring, and coordination of medical appointments to keep individuals healthy and safe.",
-            icon: StethoscopeIcon,
-            image: img3,
-            href: "/services/nursing-support",
+                "Engaging programs that build independence through recreation, education, and community integration.",
+            icon: UsersIcon,
+            image: img4,
+            href: "/community-development",
         },
+
         // ✅ UPDATED: accurate text + icon
         {
             title: "Supported Living",
@@ -96,7 +109,7 @@ export default function ServicesSolution() {
                 "Person-centered assistance so people can live in their own homes with maximum independence—skills coaching (meals, budgeting, hygiene), medication reminders, and support for community participation.",
             icon: HomeHeartIcon,
             image: img3,
-            href: "/services/supported-living",
+            href: "/supported-living",
         },
         // ✅ UPDATED: accurate text + icon
         {
@@ -105,41 +118,44 @@ export default function ServicesSolution() {
                 "Short-term planned or emergency care that gives family caregivers a break. Flexible in-home or out-of-home options with 24/7 supervision, personal care, and health monitoring.",
             icon: BedTimeIcon,
             image: img3,
-            href: "/services/respite-care",
+            href: "/respite-care",
         },
         // ✅ UPDATED: accurate text + icon
-        {
-            title: "Transportation",
-            text:
-                "Door-to-door, wheelchair-accessible rides to medical appointments, employment, day programs, and community activities—operated by trained, safety-certified drivers.",
-            icon: VanIcon,
-            image: img3,
-            href: "/services/transportation",
-        },
-        {
-            title: "Community Development",
-            text:
-                "Engaging programs that build independence through recreation, education, and community integration.",
-            icon: UsersIcon,
-            image: img4,
-            href: "/services/community-development",
-        },
-        {
-            title: "Employment Services",
-            text:
-                "Job coaching, training, and support to help individuals gain confidence and succeed in the workplace.",
-            icon: BriefcaseLockIcon,
-            image: img5,
-            href: "/services/employment-services",
-        },
         {
             title: "Day Habilitation",
             text:
                 "Structured day programs that promote learning, friendships, and meaningful community participation.",
             icon: SunIcon,
             image: img6,
-            href: "/services/day-habilitation",
+            href: "/day-habilitation",
         },
+
+        {
+            title: "Nursing Support",
+            text:
+                "Skilled nursing, medication monitoring, and coordination of medical appointments to keep individuals healthy and safe.",
+            icon: StethoscopeIcon,
+            image: img3,
+            href: "/nursing-support",
+        },
+
+        {
+            title: "Employment Services",
+            text:
+                "Job coaching, training, and support to help individuals gain confidence and succeed in the workplace.",
+            icon: BriefcaseLockIcon,
+            image: img5,
+            href: "/employment-services",
+        },
+        {
+            title: "Transportation",
+            text:
+                "Door-to-door, wheelchair-accessible rides to medical appointments, employment, day programs, and community activities—operated by trained, safety-certified drivers.",
+            icon: VanIcon,
+            image: img3,
+            href: "/transportation",
+        },
+
     ];
 
     return (

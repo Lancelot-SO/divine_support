@@ -9,6 +9,9 @@ import Services from './Pages/Services'
 import Resources from './Pages/Resources'
 import Contact from './Pages/Contact'
 import ResidentialDisplay from './Pages/ServicesDisplay/ResidentialDisplay'
+import PersonalDisplay from './Pages/ServicesDisplay/PersonalDisplay'
+import NursingDisplay from './Pages/ServicesDisplay/NursingDisplay'
+import SupportDisplay from './Pages/ServicesDisplay/SupportDisplay'
 
 
 
@@ -25,6 +28,9 @@ function App() {
           <Route path='/resources' element={<Resources />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/residential' element={<ResidentialDisplay />} />
+          <Route path='/personal-support' element={<PersonalDisplay />} />
+          <Route path='/nursing-support' element={<NursingDisplay />} />
+          <Route path='/supported-living' element={<SupportDisplay />} />
         </Routes>
         <Footer />
       </BrowserRouter>

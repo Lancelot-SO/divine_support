@@ -48,7 +48,7 @@ export default function TrustedSupport({
                         <div className="max-w-2xl text-white">
                             <motion.h2
                                 variants={itemV}
-                                className="text-3xl leading-tight font-extrabold sm:text-4xl md:text-5xl"
+                                className="text-2xl leading-tight font-extrabold sm:text-4xl md:text-5xl"
                             >
                                 {title}
                             </motion.h2>
