@@ -9,6 +9,13 @@ const MotionLink = motion(Link);
 import Photo1 from "../../assets/gallery/photo1.png";
 import Photo2 from "../../assets/gallery/photo2.png";
 import Photo3 from "../../assets/gallery/photo3.png";
+import Photo4 from "../../assets/gallery/photo4.png";
+import Photo5 from "../../assets/gallery/Photo5.png";
+import Photo6 from "../../assets/gallery/Photo6.png";
+import Photo7 from "../../assets/gallery/Photo7.png";
+import Photo8 from "../../assets/gallery/Photo8.png";
+import Photo9 from "../../assets/gallery/Photo9.png";
+
 import { Link } from "react-router-dom";
 
 const ease = [0.22, 1, 0.36, 1];
@@ -19,12 +26,12 @@ const defaultImages = [
     Photo1,
     Photo2,
     Photo3,
-    Photo2,
-    Photo1,
-    Photo3,
-    Photo2,
-    Photo3,
-    Photo1,
+    Photo4,
+    Photo5,
+    Photo6,
+    Photo7,
+    Photo8,
+    Photo9,
 ];
 
 export default function PhotoGallery({ images, title, ctaLabel, onViewMore }) {
@@ -109,10 +116,10 @@ export default function PhotoGallery({ images, title, ctaLabel, onViewMore }) {
                 {/* CTA */}
                 <div className="mt-8 md:mt-10 text-center">
                     <MotionLink
-                        to="https://flic.kr/ps/46PAWN"                 // <-- use `to`, not `href`
+                        to="#"
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={onViewMore}           // (optional) keep your handler
+                        onClick={onViewMore}
                         whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98 }}
                         className="inline-flex items-center justify-center rounded-full bg-amber-500 px-5 py-2 text-white text-sm font-semibold"

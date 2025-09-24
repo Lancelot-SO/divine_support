@@ -4,12 +4,16 @@ import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 // Local images
-import img1 from "../../assets/services/services.png";
-import img2 from "../../assets/services/services.png";
-import img3 from "../../assets/services/services.png";
-import img4 from "../../assets/services/services.png";
-import img5 from "../../assets/services/services.png";
-import img6 from "../../assets/services/services.png";
+import img1 from "../../assets/services/img1.jpg";
+import img2 from "../../assets/services/img2.png";
+import img3 from "../../assets/services/img3.png";
+import img4 from "../../assets/services/img4.png";
+import img5 from "../../assets/services/img5.png";
+import img6 from "../../assets/services/img6.png";
+import img7 from "../../assets/services/services.png";
+import img8 from "../../assets/services/img8.png";
+import img9 from "../../assets/services/img9.png";
+
 
 /* ------------------------- Reveal-on-scroll helper ------------------------- */
 /** Adds Tailwind classes when the element enters the viewport */
@@ -93,14 +97,16 @@ export default function ServicesSolution() {
             image: img2,
             href: "/personal-support",
         },
+
         {
             title: "Community Development(CDS)",
             text:
                 "Engaging programs that build independence through recreation, education, and community integration.",
             icon: UsersIcon,
-            image: img4,
+            image: img3,
             href: "/community-development",
         },
+
 
         // ✅ UPDATED: accurate text + icon
         {
@@ -108,7 +114,7 @@ export default function ServicesSolution() {
             text:
                 "Person-centered assistance so people can live in their own homes with maximum independence—skills coaching (meals, budgeting, hygiene), medication reminders, and support for community participation.",
             icon: HomeHeartIcon,
-            image: img3,
+            image: img4,
             href: "/supported-living",
         },
         // ✅ UPDATED: accurate text + icon
@@ -117,17 +123,17 @@ export default function ServicesSolution() {
             text:
                 "Short-term planned or emergency care that gives family caregivers a break. Flexible in-home or out-of-home options with 24/7 supervision, personal care, and health monitoring.",
             icon: BedTimeIcon,
-            image: img3,
+            image: img5,
             href: "/respite-care",
         },
         // ✅ UPDATED: accurate text + icon
         {
-            title: "Day Habilitation",
+            title: "Transportation",
             text:
-                "Structured day programs that promote learning, friendships, and meaningful community participation.",
-            icon: SunIcon,
+                "Door-to-door, wheelchair-accessible rides to medical appointments, employment, day programs, and community activities—operated by trained, safety-certified drivers.",
+            icon: VanIcon,
             image: img6,
-            href: "/day-habilitation",
+            href: "/transportation",
         },
 
         {
@@ -135,7 +141,7 @@ export default function ServicesSolution() {
             text:
                 "Skilled nursing, medication monitoring, and coordination of medical appointments to keep individuals healthy and safe.",
             icon: StethoscopeIcon,
-            image: img3,
+            image: img7,
             href: "/nursing-support",
         },
 
@@ -144,16 +150,18 @@ export default function ServicesSolution() {
             text:
                 "Job coaching, training, and support to help individuals gain confidence and succeed in the workplace.",
             icon: BriefcaseLockIcon,
-            image: img5,
+            image: img8,
             href: "/employment-services",
         },
+
+
         {
-            title: "Transportation",
+            title: "Day Habilitation",
             text:
-                "Door-to-door, wheelchair-accessible rides to medical appointments, employment, day programs, and community activities—operated by trained, safety-certified drivers.",
-            icon: VanIcon,
-            image: img3,
-            href: "/transportation",
+                "Structured day programs that promote learning, friendships, and meaningful community participation.",
+            icon: SunIcon,
+            image: img9,
+            href: "/day-habilitation",
         },
 
     ];

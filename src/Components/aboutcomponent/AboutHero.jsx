@@ -47,7 +47,7 @@ export default function AboutHero({ title = "About Us", image, className = "" })
 
                 {/* Dark overlay fade-in */}
                 <motion.div
-                    className="absolute inset-0 bg-black"
+                    className="absolute inset-0 bg-black/30"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.55 }}
                     transition={{ duration: 0.9, ease }}

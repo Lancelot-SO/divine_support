@@ -1,44 +1,20 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Slider from "react-slick";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import PropTypes from "prop-types";
 
-// Replace with your real images
-import hero1 from "../assets/home/hero1.png";
-import hero2 from "../assets/home/hero1.png";
-import hero3 from "../assets/home/hero1.png";
+// Real videos
+import heroVid1 from "../assets/home/vid1.mp4";
+import heroVid2 from "../assets/home/vid2.mp4";
 
 const slides = [
-    {
-        id: 1,
-        image: hero1,
-        title:
-            "Complete Health Solutions Because You Deserve The Best",
-        ctaText: "EXPLORE OUR DDA SERVICES",
-        ctaHref: "/services",
-    },
-    {
-        id: 2,
-        image: hero2,
-        title:
-            "Person-Centered Supports that build Community, Dignity, and Independence",
-        ctaText: "Explore Our Services",
-        ctaHref: "/services",
-    },
-    {
-        id: 3,
-        image: hero3,
-        title:
-            "Trusted Care. Real Outcomes. For People with I/DD and their Families",
-        ctaText: "Explore Our Services",
-        ctaHref: "/services",
-    },
+    { id: 1, src: heroVid1, title: "Complete Health Solutions Because You Deserve The Best", ctaText: "EXPLORE OUR DDA SERVICES", ctaHref: "/services" },
+    { id: 2, src: heroVid2, title: "Person-Centered Supports that build Community, Dignity, and Independence", ctaText: "Explore Our Services", ctaHref: "/services" },
 ];
-
-import PropTypes from "prop-types";
 
 function PrevArrow({ onClick }) {
     return (
@@ -68,15 +44,10 @@ function NextArrow({ onClick }) {
 }
 NextArrow.propTypes = { onClick: PropTypes.func };
 
-/** Framer variants */
 const ease = [0.22, 1, 0.36, 1];
 const containerV = {
     hidden: { opacity: 0, y: 14 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.6, ease, when: "beforeChildren", staggerChildren: 0.08 },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease, when: "beforeChildren", staggerChildren: 0.08 } },
 };
 const titleV = {
     hidden: { opacity: 0, y: 18 },
@@ -84,64 +55,102 @@ const titleV = {
 };
 const ctaV = {
     hidden: { opacity: 0, y: 20, scale: 0.98 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        transition: { duration: 0.55, ease, delay: 0.05 },
-    },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease, delay: 0.05 } },
 };
 
 export default function Hero() {
     const [active, setActive] = useState(0);
+    const sliderRef = useRef(null);
+    const videoRefs = useRef([]);
+
+    // Play only the active slide's video; pause/reset the others
+    useEffect(() => {
+        videoRefs.current.forEach((vid, idx) => {
+            if (!vid) return;
+            if (idx === active) {
+                const playIt = () => vid.play().catch(() => { });
+                if (vid.readyState >= 2) playIt();
+                else vid.addEventListener("loadeddata", playIt, { once: true });
+            } else {
+                try {
+                    vid.pause();
+                    vid.currentTime = 0;
+                } catch {
+                    //ignore
+                }
+            }
+        });
+    }, [active]);
 
     const settings = {
-        arrows: true,
+        arrows: true, // set to false if you want zero UI
         dots: false,
         infinite: true,
-        speed: 700,
-        autoplay: true,
-        autoplaySpeed: 6000,
+        loop: true,
+        speed: 600,
+        autoplay: true, // we control via video end + effects
         slidesToShow: 1,
         slidesToScroll: 1,
-        pauseOnHover: true,
+        pauseOnHover: false,
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
         adaptiveHeight: false,
-        afterChange: (i) => setActive(i), // tells us which slide is active
+        onInit: () => {
+            // Autoplay first video on load
+            const first = videoRefs.current[0];
+            if (first) {
+                const playIt = () => first.play().catch(() => { });
+                if (first.readyState >= 2) playIt();
+                else first.addEventListener("loadeddata", playIt, { once: true });
+            }
+        },
+        beforeChange: (current) => {
+            const outVid = videoRefs.current[current];
+            if (outVid) {
+                try {
+                    outVid.pause();
+                    outVid.currentTime = 0;
+                } catch {
+                    //ignore
+                }
+            }
+        },
+        afterChange: (i) => setActive(i),
     };
 
     return (
         <section className="mx-auto w-full max-w-8xl px-4 md:px-6">
             <div className="relative overflow-hidden rounded-3xl ring-2 ring-sky-500/70 shadow-lg">
-                <Slider {...settings}>
+                <Slider ref={sliderRef} {...settings}>
                     {slides.map((s, i) => {
                         const isActive = i === active;
                         return (
                             <div key={s.id}>
                                 <div className="relative h-[40vh] min-h-[620px] md:h-[80vh]">
-                                    {/* Image with subtle Ken-Burns on the active slide */}
-                                    <motion.img
-                                        src={s.image}
-                                        alt=""
+                                    <motion.video
+                                        ref={(el) => (videoRefs.current[i] = el)}
                                         className="absolute inset-0 h-full w-full object-cover"
-                                        draggable="false"
+                                        // ——— Only the specified attributes ———
+                                        muted
+                                        playsInline
+                                        controls={false}
+                                        autoPlay={isActive}
+                                        onEnded={() => sliderRef.current?.slickNext?.()}
+                                        // ——— Presentation (Framer Motion) ———
                                         initial={false}
-                                        animate={{
-                                            scale: isActive ? 1.08 : 1.02,
-                                        }}
+                                        animate={{ scale: isActive ? 1.06 : 1.0 }}
                                         transition={{ duration: 6, ease: "linear" }}
-                                    />
+                                    >
+                                        <source src={s.src} type="video/mp4" />
+                                    </motion.video>
 
-                                    {/* Slightly animated overlay for depth */}
                                     <motion.div
-                                        className="absolute inset-0 bg-black/30"
+                                        className="absolute inset-0 bg-black/35"
                                         initial={false}
                                         animate={{ opacity: isActive ? 0.35 : 0.28 }}
                                         transition={{ duration: 0.6, ease }}
                                     />
 
-                                    {/* Content */}
                                     <div className="relative z-10 flex h-full items-center justify-center px-4">
                                         <motion.div
                                             variants={containerV}
@@ -152,9 +161,7 @@ export default function Hero() {
                                             <motion.h1
                                                 variants={titleV}
                                                 className="mx-auto max-w-5xl font-extrabold tracking-tight text-white
-                                   text-2xl leading-tight
-                                   md:text-6xl md:leading-[1.1]
-                                   xl:text-7xl"
+                          text-2xl leading-tight md:text-6xl md:leading-[1.1] xl:text-7xl"
                                             >
                                                 {s.title}
                                             </motion.h1>

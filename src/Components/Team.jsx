@@ -16,9 +16,6 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 import T1 from "../assets/gallery/photo2.png";
 import T2 from "../assets/gallery/photo2.png";
 import T3 from "../assets/gallery/photo2.png";
-import T4 from "../assets/gallery/photo2.png";
-import T5 from "../assets/gallery/photo2.png";
-import T6 from "../assets/gallery/photo2.png";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -132,59 +129,6 @@ export default function Team({ title, subtitle, members }) {
                                                 <p className="mt-3 text-sm text-gray-600 leading-relaxed line-clamp-3">{m.bio}</p>
                                             ) : null}
 
-                                            {/* Socials: LinkedIn, X/Twitter, Instagram */}
-                                            {(m.socials?.linkedin || m.socials?.twitter || m.socials?.instagram) && (
-                                                <div className="mt-5 flex items-center justify-center gap-3">
-                                                    {m.socials?.linkedin && (
-                                                        <motion.a
-                                                            href={m.socials.linkedin}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            initial={{ opacity: 0, y: 6 }}
-                                                            whileInView={{ opacity: 1, y: 0 }}
-                                                            whileHover={{ y: -2 }}
-                                                            transition={{ duration: 0.4, ease }}
-                                                            aria-label={`${m.name} on LinkedIn`}
-                                                            className="grid h-9 w-9 place-items-center rounded-full ring-1 ring-gray-200 bg-white text-slate-700 hover:text-slate-900"
-                                                            onClick={(e) => e.stopPropagation()}
-                                                        >
-                                                            <LinkedInIcon className="h-4.5 w-4.5" />
-                                                        </motion.a>
-                                                    )}
-                                                    {m.socials?.twitter && (
-                                                        <motion.a
-                                                            href={m.socials.twitter}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            initial={{ opacity: 0, y: 6 }}
-                                                            whileInView={{ opacity: 1, y: 0 }}
-                                                            whileHover={{ y: -2 }}
-                                                            transition={{ duration: 0.45, ease, delay: 0.05 }}
-                                                            aria-label={`${m.name} on X/Twitter`}
-                                                            className="grid h-9 w-9 place-items-center rounded-full ring-1 ring-gray-200 bg-white text-slate-700 hover:text-slate-900"
-                                                            onClick={(e) => e.stopPropagation()}
-                                                        >
-                                                            <TwitterIcon className="h-4.5 w-4.5" />
-                                                        </motion.a>
-                                                    )}
-                                                    {m.socials?.instagram && (
-                                                        <motion.a
-                                                            href={m.socials.instagram}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            initial={{ opacity: 0, y: 6 }}
-                                                            whileInView={{ opacity: 1, y: 0 }}
-                                                            whileHover={{ y: -2 }}
-                                                            transition={{ duration: 0.45, ease, delay: 0.1 }}
-                                                            aria-label={`${m.name} on Instagram`}
-                                                            className="grid h-9 w-9 place-items-center rounded-full ring-1 ring-gray-200 bg-white text-slate-700 hover:text-slate-900"
-                                                            onClick={(e) => e.stopPropagation()}
-                                                        >
-                                                            <InstagramIcon className="h-4.5 w-4.5" />
-                                                        </motion.a>
-                                                    )}
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                 </motion.article>
@@ -254,45 +198,6 @@ export default function Team({ title, subtitle, members }) {
                                         </p>
                                     )}
                                 </div>
-
-                                {/* Socials (bigger) */}
-                                {(selected.socials?.linkedin || selected.socials?.twitter || selected.socials?.instagram) && (
-                                    <div className="mt-6">
-                                        <p className="text-sm font-semibold text-gray-900">Connect</p>
-                                        <div className="mt-3 flex items-center gap-3">
-                                            {selected.socials?.linkedin && (
-                                                <a
-                                                    href={selected.socials.linkedin}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="grid h-10 w-10 place-items-center rounded-full ring-1 ring-gray-200 bg-white text-slate-700 hover:text-slate-900"
-                                                >
-                                                    <LinkedInIcon className="h-5 w-5" />
-                                                </a>
-                                            )}
-                                            {selected.socials?.twitter && (
-                                                <a
-                                                    href={selected.socials.twitter}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="grid h-10 w-10 place-items-center rounded-full ring-1 ring-gray-200 bg-white text-slate-700 hover:text-slate-900"
-                                                >
-                                                    <TwitterIcon className="h-5 w-5" />
-                                                </a>
-                                            )}
-                                            {selected.socials?.instagram && (
-                                                <a
-                                                    href={selected.socials.instagram}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="grid h-10 w-10 place-items-center rounded-full ring-1 ring-gray-200 bg-white text-slate-700 hover:text-slate-900"
-                                                >
-                                                    <InstagramIcon className="h-5 w-5" />
-                                                </a>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </motion.aside>
                     </motion.div>
@@ -363,33 +268,6 @@ function TiltCard({ children }) {
 }
 TiltCard.propTypes = { children: PropTypes.node.isRequired };
 
-/* ---------------- Icons ---------------- */
-function TwitterIcon({ className }) {
-    return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-            <path d="M20.7 7.2c.5 7-4.6 11.1-10.4 11.1-2.1 0-4-.6-5.6-1.6 2 .2 4-.3 5.6-1.6-1.7 0-3.1-1.2-3.6-2.7.6.1 1.2.1 1.8-.1-1.8-.4-3.1-2-3.1-3.9.5.3 1.1.5 1.8.6-1.7-1.2-2.2-3.4-1.2-5.1 2 2.5 5.1 4.1 8.5 4.3-.5-2.1 1.1-4 3.2-4 1 0 2 .4 2.6 1.1.8-.2 1.5-.5 2.2-.9-.3.9-.9 1.6-1.7 2.1.7-.1 1.3-.3 1.9-.5z" />
-        </svg>
-    );
-}
-TwitterIcon.propTypes = { className: PropTypes.string };
-
-function LinkedInIcon({ className }) {
-    return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-            <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.5-1 1.8-2.2 3.8-2.2 4 0 4.8 2.6 4.8 6V24h-4v-7.2c0-1.7 0-3.8-2.3-3.8s-2.7 1.8-2.7 3.7V24h-4V8z" />
-        </svg>
-    );
-}
-LinkedInIcon.propTypes = { className: PropTypes.string };
-
-function InstagramIcon({ className }) {
-    return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-            <path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H7zm5 3.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm6-2.25a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5z" />
-        </svg>
-    );
-}
-InstagramIcon.propTypes = { className: PropTypes.string };
 
 function CloseIcon({ className }) {
     return (
@@ -407,65 +285,20 @@ const defaultTeam = [
         role: "Director of Nursing",
         photo: T1, // local asset
         bio: "Leads care standards and clinical training across all programs.",
-        socials: {
-            linkedin: "https://www.linkedin.com/",
-            twitter: "https://twitter.com/",
-            instagram: "https://instagram.com/",
-        },
+
     },
     {
         name: "Marcus Reed",
         role: "Behavioral Specialist",
         photo: T2,
         bio: "Designs supportive plans focused on safety, dignity, and growth.",
-        socials: {
-            linkedin: "https://www.linkedin.com/",
-            twitter: "https://twitter.com/",
-            instagram: "https://instagram.com/",
-        },
+
     },
     {
         name: "Priya Desai",
         role: "Community Programs Lead",
         photo: T3,
         bio: "Builds bridges to inclusive community activities and partnerships.",
-        socials: {
-            linkedin: "https://www.linkedin.com/",
-            twitter: "https://twitter.com/",
-            instagram: "https://instagram.com/",
-        },
-    },
-    {
-        name: "Liam Chen",
-        role: "Employment Coach",
-        photo: T4,
-        bio: "Coaches job seekers on confidence, skills, and workplace readiness.",
-        socials: {
-            linkedin: "https://www.linkedin.com/",
-            twitter: "https://twitter.com/",
-            instagram: "https://instagram.com/",
-        },
-    },
-    {
-        name: "Nora Williams",
-        role: "Residential Coordinator",
-        photo: T5,
-        bio: "Ensures safe, supportive homes and personalized care planning.",
-        socials: {
-            linkedin: "https://www.linkedin.com/",
-            twitter: "https://twitter.com/",
-            instagram: "https://instagram.com/",
-        },
-    },
-    {
-        name: "Diego Rivera",
-        role: "Registered Nurse",
-        photo: T6,
-        bio: "Coordinates medical appointments and health monitoring.",
-        socials: {
-            linkedin: "https://www.linkedin.com/",
-            twitter: "https://twitter.com/",
-            instagram: "https://instagram.com/",
-        },
+
     },
 ];
