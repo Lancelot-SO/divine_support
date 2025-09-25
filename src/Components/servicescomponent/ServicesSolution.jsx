@@ -128,12 +128,12 @@ export default function ServicesSolution() {
         },
         // ✅ UPDATED: accurate text + icon
         {
-            title: "Transportation",
+            title: "Day Habilitation",
             text:
-                "Door-to-door, wheelchair-accessible rides to medical appointments, employment, day programs, and community activities—operated by trained, safety-certified drivers.",
-            icon: VanIcon,
-            image: img6,
-            href: "/transportation",
+                "Structured day programs that promote learning, friendships, and meaningful community participation.",
+            icon: SunIcon,
+            image: img9,
+            href: "/day-habilitation",
         },
 
         {
@@ -154,14 +154,13 @@ export default function ServicesSolution() {
             href: "/employment-services",
         },
 
-
         {
-            title: "Day Habilitation",
+            title: "Transportation",
             text:
-                "Structured day programs that promote learning, friendships, and meaningful community participation.",
-            icon: SunIcon,
-            image: img9,
-            href: "/day-habilitation",
+                "Door-to-door, wheelchair-accessible rides to medical appointments, employment, day programs, and community activities—operated by trained, safety-certified drivers.",
+            icon: VanIcon,
+            image: img6,
+            href: "/transportation",
         },
 
     ];

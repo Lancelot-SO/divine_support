@@ -121,7 +121,7 @@ export default function AboutResidence({ className = "" }) {
                         </>
                     }
                     ctaLabel="Explore Residential Services"
-                    href="#"
+                    href="/residential"
                 />
 
                 <Card
@@ -136,7 +136,7 @@ export default function AboutResidence({ className = "" }) {
                         </>
                     }
                     ctaLabel="Discover Support Services"
-                    href="#"
+                    href="/personal-support"
                 />
 
                 <Card
