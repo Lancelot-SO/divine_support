@@ -32,7 +32,16 @@ export default function ContactBody({ leftImage, rightImage }) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        alert("Thanks! Your message has been queued.");
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+
+        // Convert checkbox to boolean
+        data.agree = formData.get("agree") ? true : false;
+
+        console.log("Form submitted:", data);
+
+        // TODO: replace with email backend API call
+        alert("Thanks! Your message has been queued.\n\n" + JSON.stringify(data, null, 2));
     };
 
     return (
@@ -171,15 +180,16 @@ export default function ContactBody({ leftImage, rightImage }) {
                     </div>
 
                     <form onSubmit={onSubmit} className="mt-6 space-y-3">
-                        <Field icon={UserIcon} placeholder="Name" />
-                        <Field type="email" icon={MailIcon} placeholder="Email Address" />
-                        <Field type="tel" icon={PhoneIcon} placeholder="Phone" />
-                        <Field type="url" icon={GlobeIcon} placeholder="Website" />
-                        <Field as="textarea" icon={PencilIcon} placeholder="Write message" rows={4} />
+                        <Field name="name" icon={UserIcon} placeholder="Name" />
+                        <Field name="email" type="email" icon={MailIcon} placeholder="Email Address" />
+                        <Field name="phone" type="tel" icon={PhoneIcon} placeholder="Phone" />
+                        <Field name="website" type="url" icon={GlobeIcon} placeholder="Website" />
+                        <Field name="message" as="textarea" icon={PencilIcon} placeholder="Write message" rows={4} />
 
                         <label className="mt-2 flex items-start gap-3 text-sm text-gray-600">
                             <input
                                 type="checkbox"
+                                name="agree"
                                 className="mt-1 h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500"
                                 checked={agree}
                                 onChange={(e) => setAgree(e.target.checked)}
@@ -193,7 +203,6 @@ export default function ContactBody({ leftImage, rightImage }) {
                             whileTap={{ scale: 0.98 }}
                             className="relative w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-white text-sm font-semibold shadow overflow-hidden"
                         >
-                            {/* subtle shine */}
                             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent" />
                             <span className="relative">Send Message</span>
                             <ArrowRight className="h-4 w-4 relative" />
@@ -216,7 +225,7 @@ ContactBody.defaultProps = {
 };
 
 /* ---------------- Field ---------------- */
-function Field({ as, type, icon: Icon, placeholder, rows }) {
+function Field({ as, type, icon: Icon, placeholder, rows, name }) {
     const Tag = as === "textarea" ? "textarea" : "input";
     return (
         <div className="relative">
@@ -224,6 +233,7 @@ function Field({ as, type, icon: Icon, placeholder, rows }) {
                 <Icon className="h-5 w-5 text-gray-400" />
             </div>
             <Tag
+                name={name}
                 type={Tag === "input" ? type || "text" : undefined}
                 placeholder={placeholder}
                 rows={Tag === "textarea" ? rows || 4 : undefined}
@@ -238,6 +248,7 @@ Field.propTypes = {
     icon: PropTypes.elementType.isRequired,
     placeholder: PropTypes.string.isRequired,
     rows: PropTypes.number,
+    name: PropTypes.string.isRequired,
 };
 
 /* ---------------- Icons ---------------- */
