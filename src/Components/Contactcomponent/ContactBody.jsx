@@ -27,21 +27,57 @@ const cardV = {
     show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.55, ease } },
 };
 
+/** Decide the endpoint:
+ * - If you use the Vite proxy (see below), call "/dss/api/contactus" in dev.
+ * - In production, call the real domain.
+ * - You can override via VITE_CONTACT_API in your .env if you like.
+ */
+const API_URL = "https://api.dss-inc.org/api/contactus";
+
 export default function ContactBody({ leftImage, rightImage }) {
     const [agree, setAgree] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [notice, setNotice] = useState(null); // {type: 'ok'|'err', text: string}
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
+        setNotice(null);
+
         const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
 
-        // Convert checkbox to boolean
-        data.agree = formData.get("agree") ? true : false;
+        // normalize to primitive types/strings the API may expect
+        formData.set("agree", formData.get("agree") ? "true" : "false");
 
-        console.log("Form submitted:", data);
+        setLoading(true);
+        try {
+            // IMPORTANT: do NOT set headers; let the browser set multipart boundary to avoid preflight
+            const res = await fetch(API_URL, {
+                method: "POST",
+                body: formData,
+            });
 
-        // TODO: replace with email backend API call
-        alert("Thanks! Your message has been queued.\n\n" + JSON.stringify(data, null, 2));
+            // The API may return JSON or plain text; handle both safely
+            const contentType = res.headers.get("content-type") || "";
+            const payload = contentType.includes("application/json")
+                ? await res.json().catch(() => ({}))
+                : await res.text().catch(() => "");
+
+            if (!res.ok) {
+                const message =
+                    (payload && payload.message) ||
+                    (typeof payload === "string" && payload) ||
+                    `Request failed (${res.status})`;
+                throw new Error(message);
+            }
+
+            setNotice({ type: "ok", text: "Thanks! Your message was sent successfully." });
+            e.target.reset();
+            setAgree(false);
+        } catch (err) {
+            setNotice({ type: "err", text: err.message || "Failed to send message." });
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -179,6 +215,18 @@ export default function ContactBody({ leftImage, rightImage }) {
                         </p>
                     </div>
 
+                    {/* Notice */}
+                    {notice && (
+                        <div
+                            className={`mt-5 mb-4 rounded-xl px-4 py-3 text-sm ${notice.type === "ok"
+                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                : "bg-rose-50 text-rose-700 border border-rose-200"
+                                }`}
+                        >
+                            {notice.text}
+                        </div>
+                    )}
+
                     <form onSubmit={onSubmit} className="mt-6 space-y-3">
                         <Field name="name" icon={UserIcon} placeholder="Name" />
                         <Field name="email" type="email" icon={MailIcon} placeholder="Email Address" />
@@ -194,17 +242,18 @@ export default function ContactBody({ leftImage, rightImage }) {
                                 checked={agree}
                                 onChange={(e) => setAgree(e.target.checked)}
                             />
-                            <span>I agree with company terms & condition.</span>
+                            <span>I agree with company terms &amp; condition.</span>
                         </label>
 
                         <motion.button
                             type="submit"
+                            disabled={loading || !agree}
                             whileHover={{ y: -2 }}
                             whileTap={{ scale: 0.98 }}
-                            className="relative w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-white text-sm font-semibold shadow overflow-hidden"
+                            className="relative w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-white text-sm font-semibold shadow overflow-hidden disabled:opacity-60"
                         >
                             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-                            <span className="relative">Send Message</span>
+                            <span className="relative">{loading ? "Sending..." : "Send Message"}</span>
                             <ArrowRight className="h-4 w-4 relative" />
                         </motion.button>
                     </form>
