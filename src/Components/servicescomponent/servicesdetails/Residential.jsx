@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import { CheckCircle2, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
+import Res1 from "../../../assets/services/res1.jpg";
+import Res2 from "../../../assets/services/res2.jpg";
+import Res3 from "../../../assets/services/res3.jpg";
 
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -28,11 +31,11 @@ const imageV = {
 };
 
 const heroImg =
-    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1960&auto=format&fit=crop";
+    Res1;
 const leftImg =
-    "https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?q=80&w=1964&auto=format&fit=crop";
+    Res2;
 const rightImg =
-    "https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?q=80&w=1964&auto=format&fit=crop";
+    Res3;
 
 function Feature({ title, children }) {
     return (

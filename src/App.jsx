@@ -15,6 +15,8 @@ import SupportDisplay from './Pages/ServicesDisplay/SupportDisplay'
 import EmploymentDisplay from './Pages/ServicesDisplay/EmploymentDisplay'
 import TransportDisplay from './Pages/ServicesDisplay/TransportDisplay'
 import RespiteDisplay from './Pages/ServicesDisplay/RespiteDisplay'
+import CommunityDisplay from './Pages/ServicesDisplay/CommunityDisplay'
+import HabilitationDisplay from './Pages/ServicesDisplay/HabilitationDisplay'
 
 
 
@@ -37,7 +39,8 @@ function App() {
           <Route path='/employment-services' element={<EmploymentDisplay />} />
           <Route path='/transportation' element={<TransportDisplay />} />
           <Route path='/respite-care' element={<RespiteDisplay />} />
-
+          <Route path='/community-development' element={<CommunityDisplay />} />
+          <Route path='/day-habilitation' element={<HabilitationDisplay />} />
         </Routes>
         <Footer />
       </BrowserRouter>

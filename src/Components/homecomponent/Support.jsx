@@ -19,7 +19,7 @@ const cards = [
             </>
         ),
         cta: "Explore Residential Services",
-        href: "/services/residential",
+        href: "/residential",
     },
     {
         id: "02",
@@ -34,7 +34,7 @@ const cards = [
             </>
         ),
         cta: "Discover Support Services",
-        href: "/services/community",
+        href: "/community-development",
     },
     {
         id: "03",
@@ -49,7 +49,7 @@ const cards = [
             </>
         ),
         cta: "See Day Programs",
-        href: "/services/day-programs",
+        href: "/supported-living",
     },
 ];
 
