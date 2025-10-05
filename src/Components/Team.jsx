@@ -13,9 +13,9 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
  */
 
 // ---- Local images (swap these for your assets) ----
-import T1 from "../assets/gallery/photo2.png";
-import T2 from "../assets/gallery/photo2.png";
-import T3 from "../assets/gallery/photo2.png";
+import T1 from "../assets/gallery/team2.jpg";
+import T2 from "../assets/gallery/team2.jpg";
+import T3 from "../assets/gallery/team2.jpg";
 
 const ease = [0.22, 1, 0.36, 1];
 

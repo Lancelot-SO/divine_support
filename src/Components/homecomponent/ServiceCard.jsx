@@ -87,7 +87,7 @@ const defaultServices = [
         desc:
             "Community living group homes, respite care, and supported living designed to promote safety, independence, and comfort.",
         Icon: Trees,
-        href: "#",
+        href: "/community-development",
     },
     {
         title: "Nursing Services",
@@ -102,14 +102,14 @@ const defaultServices = [
         desc:
             "Community living group homes, respite care, and supported living designed to promote safety, independence, and comfort.",
         Icon: BriefcaseBusiness,
-        href: "#",
+        href: "/employment-services",
     },
     {
         title: "Day Habilitation",
         desc:
             "Community living group homes, respite care, and supported living designed to promote safety, independence, and comfort.",
         Icon: Sun,
-        href: "#",
+        href: "/habilitation",
     },
 ];
 
