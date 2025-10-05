@@ -1,9 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1];
+const API_URL = "https://api.dss-inc.org/api/job-application";
 
 const defaultRoles = [
     "Frontend Developer",
@@ -14,19 +15,26 @@ const defaultRoles = [
     "QA Engineer",
 ];
 
-const formV = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.05 } },
-};
+const formV = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 const fieldV = {
     hidden: { opacity: 0, y: 8 },
     show: { opacity: 1, y: 0, transition: { duration: 0.25 } },
 };
 
-export default function ApplyModal({ open, onClose, onSubmit, roles }) {
+export default function ApplyModal({ open, onClose, roles }) {
     const firstFieldRef = useRef(null);
 
-    // Lock body scroll + ESC close + autofocus
+    // status / errors
+    const [submitting, setSubmitting] = useState(false);
+    const [submitOK, setSubmitOK] = useState(false);
+    const [submitErr, setSubmitErr] = useState("");
+
+    // Résumé preview state
+    const [resumeFile, setResumeFile] = useState(null);
+    const [resumeURL, setResumeURL] = useState(null);
+    const [fileInputKey, setFileInputKey] = useState(0); // to reset input
+
+    // Lock body scroll + ESC to close + autofocus
     useEffect(() => {
         if (!open) return;
         const prev = document.body.style.overflow;
@@ -41,12 +49,89 @@ export default function ApplyModal({ open, onClose, onSubmit, roles }) {
         };
     }, [open, onClose]);
 
-    const handleSubmit = (e) => {
+    // helpers
+    const formatBytes = (bytes) => {
+        if (typeof bytes !== "number") return "";
+        const units = ["B", "KB", "MB", "GB"];
+        let i = 0;
+        let n = bytes;
+        while (n >= 1024 && i < units.length - 1) {
+            n /= 1024;
+            i++;
+        }
+        return `${n.toFixed(1)} ${units[i]}`;
+    };
+
+    const handleResumeSelect = (file) => {
+        setResumeFile(file || null);
+        if (resumeURL) {
+            URL.revokeObjectURL(resumeURL);
+            setResumeURL(null);
+        }
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setResumeURL(url);
+        }
+    };
+
+    const clearResume = () => {
+        if (resumeURL) URL.revokeObjectURL(resumeURL);
+        setResumeURL(null);
+        setResumeFile(null);
+        setFileInputKey((k) => k + 1); // reset native input
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const fd = new FormData(e.currentTarget);
-        const payload = Object.fromEntries(fd.entries());
-        payload.resume = fd.get("resume"); // include File object
-        onSubmit?.(payload);
+        setSubmitting(true);
+        setSubmitErr("");
+        setSubmitOK(false);
+
+        try {
+            const fd = new FormData(e.currentTarget);
+
+            // If you want to ensure the resume in FormData is the selected file, sync it:
+            if (resumeFile) {
+                fd.set("resume", resumeFile);
+            }
+
+            // Example: normalize a few optional fields
+            // (If your backend expects specific names, keep them exactly.)
+            // name, email, phone, role, linkedin, website, cover, resume, agree
+
+            const res = await fetch(API_URL, {
+                method: "POST",
+                body: fd, // don't set Content-Type; browser sets multipart/form-data boundary
+            });
+
+            // API may return JSON; try to parse but guard for non-JSON
+            let payload = null;
+            try {
+                payload = await res.json();
+            } catch {
+                /* ignore parse errors */
+            }
+
+            if (!res.ok) {
+                const msg =
+                    (payload && (payload.message || payload.error)) ||
+                    `Request failed (${res.status})`;
+                throw new Error(msg);
+            }
+
+            // success!
+            setSubmitOK(true);
+            // Optionally close after a short delay:
+            // setTimeout(() => onClose?.(), 1500);
+
+            // Clear the form & file input
+            e.currentTarget.reset();
+            clearResume();
+        } catch (err) {
+            setSubmitErr(err?.message || "Failed to submit application.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -78,7 +163,6 @@ export default function ApplyModal({ open, onClose, onSubmit, roles }) {
                     >
                         {/* Header */}
                         <div className="relative overflow-hidden border-b border-gray-100">
-                            {/* soft gradient banner */}
                             <div className="absolute inset-0 bg-gradient-to-r from-amber-500/15 via-amber-400/10 to-transparent" />
                             <div className="relative flex items-start justify-between gap-4 p-5">
                                 <div>
@@ -105,6 +189,20 @@ export default function ApplyModal({ open, onClose, onSubmit, roles }) {
                             initial="hidden"
                             animate="show"
                         >
+                            {/* Status bar */}
+                            {(submitOK || submitErr) && (
+                                <div
+                                    className={[
+                                        "rounded-lg border px-3 py-2 text-sm",
+                                        submitOK
+                                            ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                                            : "border-rose-200 bg-rose-50 text-rose-800",
+                                    ].join(" ")}
+                                >
+                                    {submitOK ? "Application submitted successfully." : submitErr}
+                                </div>
+                            )}
+
                             {/* Section: Your details */}
                             <SectionTitle>1. Your Details</SectionTitle>
 
@@ -139,7 +237,9 @@ export default function ApplyModal({ open, onClose, onSubmit, roles }) {
                             </motion.div>
 
                             {/* Section: Links (optional) */}
-                            <SectionTitle>2. Links <span className="text-gray-400 font-normal">(optional)</span></SectionTitle>
+                            <SectionTitle>
+                                2. Links <span className="text-gray-400 font-normal">(optional)</span>
+                            </SectionTitle>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <motion.div variants={fieldV}>
@@ -166,16 +266,53 @@ export default function ApplyModal({ open, onClose, onSubmit, roles }) {
                             <SectionTitle>3. Attachments</SectionTitle>
 
                             <motion.div variants={fieldV}>
-                                <FileDrop name="resume" label="Résumé (PDF, DOCX)" help="Optional but recommended." />
+                                <FileDrop
+                                    key={fileInputKey}
+                                    name="resume"
+                                    label="Résumé (PDF, DOCX)"
+                                    help="Optional but recommended."
+                                    onFileSelect={handleResumeSelect}
+                                    disabled={submitting}
+                                />
                             </motion.div>
 
+                            {/* Uploaded résumé preview */}
+                            {resumeFile && (
+                                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                        <div className="min-w-0">
+                                            <p className="text-sm font-semibold text-gray-900 truncate">
+                                                {resumeFile.name}
+                                            </p>
+                                            <p className="text-xs text-gray-600">
+                                                {formatBytes(resumeFile.size)} · {resumeFile.type || "Unknown type"}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {resumeURL && (
+                                                <a
+                                                    href={resumeURL}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center justify-center rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-white"
+                                                >
+                                                    Preview
+                                                </a>
+                                            )}
+                                            <button
+                                                type="button"
+                                                onClick={clearResume}
+                                                className="inline-flex items-center justify-center rounded-full bg-rose-50 text-rose-700 px-3 py-1.5 text-xs font-semibold hover:bg-rose-100"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             <motion.div variants={fieldV}>
-                                <Textarea
-                                    name="cover"
-                                    label="Cover Letter"
-                                    placeholder="Why are you a great fit?"
-                                    rows={5}
-                                />
+                                <Textarea name="cover" label="Cover Letter" placeholder="Why are you a great fit?" rows={5} />
                             </motion.div>
 
                             {/* Consent + Actions */}
@@ -191,10 +328,14 @@ export default function ApplyModal({ open, onClose, onSubmit, roles }) {
                                     type="submit"
                                     whileHover={{ y: -2 }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-white font-semibold shadow"
+                                    disabled={submitting}
+                                    className={[
+                                        "inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-white font-semibold shadow",
+                                        submitting ? "bg-amber-400 cursor-not-allowed" : "bg-amber-500",
+                                    ].join(" ")}
                                 >
-                                    Submit Application
-                                    <ArrowRight className="h-4 w-4" />
+                                    {submitting ? "Submitting..." : "Submit Application"}
+                                    {!submitting && <ArrowRight className="h-4 w-4" />}
                                 </motion.button>
                                 <button
                                     type="button"
@@ -215,16 +356,11 @@ export default function ApplyModal({ open, onClose, onSubmit, roles }) {
 ApplyModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func, // (data) => void
     roles: PropTypes.arrayOf(PropTypes.string),
 };
 
 ApplyModal.defaultProps = {
     roles: undefined,
-    onSubmit: (data) => {
-        console.log("Application submitted:", data);
-        alert("Application submitted! Check the console for payload.");
-    },
 };
 
 /* ---------- UI bits ---------- */
@@ -289,13 +425,7 @@ function Textarea({ name, label, placeholder, rows = 4 }) {
     return (
         <div>
             <Label htmlFor={name}>{label}</Label>
-            <textarea
-                id={name}
-                name={name}
-                rows={rows}
-                placeholder={placeholder}
-                className={`${baseInput} resize-y`}
-            />
+            <textarea id={name} name={name} rows={rows} placeholder={placeholder} className={`${baseInput} resize-y`} />
         </div>
     );
 }
@@ -325,7 +455,6 @@ function Select({ name, label, options, required = false, icon }) {
                         </option>
                     ))}
                 </select>
-                {/* chevron */}
                 <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-gray-400">
                     <ChevronDown className="h-4 w-4" />
                 </span>
@@ -341,13 +470,19 @@ Select.propTypes = {
     icon: PropTypes.elementType,
 };
 
-function FileDrop({ name, label, help }) {
+function FileDrop({ name, label, help, disabled = false, onFileSelect }) {
+    const handleChange = (e) => {
+        const file = e.target.files?.[0] || null;
+        onFileSelect?.(file);
+    };
+
     return (
         <div>
             <Label htmlFor={name}>{label}</Label>
             <label
                 htmlFor={name}
-                className="group flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-8 text-center hover:border-amber-400 hover:bg-white transition"
+                className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-8 text-center hover:border-amber-400 hover:bg-white transition ${disabled ? "opacity-70 cursor-not-allowed pointer-events-none" : ""
+                    }`}
             >
                 <UploadIcon className="h-6 w-6 text-gray-500 group-hover:text-amber-500" />
                 <div className="text-sm">
@@ -355,7 +490,15 @@ function FileDrop({ name, label, help }) {
                     <span className="text-gray-500">or drag & drop</span>
                 </div>
                 <div className="text-xs text-gray-500">PDF, DOC, DOCX up to ~10MB</div>
-                <input id={name} name={name} type="file" accept=".pdf,.doc,.docx,.rtf" className="sr-only" />
+                <input
+                    id={name}
+                    name={name}
+                    type="file"
+                    accept=".pdf,.doc,.docx,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    className="sr-only"
+                    onChange={handleChange}
+                    disabled={disabled}
+                />
             </label>
             {help ? <p className="mt-1 text-xs text-gray-500">{help}</p> : null}
         </div>
@@ -365,6 +508,8 @@ FileDrop.propTypes = {
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     help: PropTypes.string,
+    disabled: PropTypes.bool,
+    onFileSelect: PropTypes.func, // new
 };
 
 /* ---------- Icons ---------- */

@@ -27,7 +27,7 @@ export default function TrustedSupport({
     title = "Looking For Compassionate & Trusted Support Services?",
     bullets = ["Licensed DDA Provider in Maryland", "Experienced, Caring Professionals"],
     ctaText = "Get Support Today",
-    ctaHref = "#",
+    ctaHref = "/contact",
     image = supportImg,
 }) {
     return (
@@ -43,7 +43,7 @@ export default function TrustedSupport({
                     {/* Left: gradient content (no negative z-index; gradient applied directly) */}
                     <motion.div
                         variants={itemV}
-                        className="relative order-2 lg:order-1 flex flex-col justify-center items-center bg-[radial-gradient(99.92%_352.65%_at_98.22%_0%,#F5B853_0%,#FAD394_52.37%,#F09C13_100%)]"
+                        className="relative order-2 lg:order-1 flex flex-col justify-center items-center bg-amber-500"
                     >
                         <div className="max-w-2xl text-white">
                             <motion.h2
