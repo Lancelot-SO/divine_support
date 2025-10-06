@@ -90,26 +90,26 @@ export default function ApplyModal({ open, onClose, roles }) {
         try {
             const fd = new FormData(e.currentTarget);
 
-            // If you want to ensure the resume in FormData is the selected file, sync it:
+            // Force agree -> "1" or "0"
+            const agreed = e.currentTarget.elements.agree?.checked === true;
+            fd.set("agree", agreed ? "1" : "0");
+
+            // Ensure selected file is used (if you keep separate preview state)
             if (resumeFile) {
                 fd.set("resume", resumeFile);
             }
 
-            // Example: normalize a few optional fields
-            // (If your backend expects specific names, keep them exactly.)
             // name, email, phone, role, linkedin, website, cover, resume, agree
-
             const res = await fetch(API_URL, {
                 method: "POST",
-                body: fd, // don't set Content-Type; browser sets multipart/form-data boundary
+                body: fd, // let browser set multipart/form-data boundary
             });
 
-            // API may return JSON; try to parse but guard for non-JSON
             let payload = null;
             try {
                 payload = await res.json();
             } catch {
-                /* ignore parse errors */
+                /* ignore non-JSON */
             }
 
             if (!res.ok) {
@@ -121,10 +121,8 @@ export default function ApplyModal({ open, onClose, roles }) {
 
             // success!
             setSubmitOK(true);
-            // Optionally close after a short delay:
-            // setTimeout(() => onClose?.(), 1500);
 
-            // Clear the form & file input
+            // reset form + file
             e.currentTarget.reset();
             clearResume();
         } catch (err) {
@@ -509,7 +507,7 @@ FileDrop.propTypes = {
     label: PropTypes.string.isRequired,
     help: PropTypes.string,
     disabled: PropTypes.bool,
-    onFileSelect: PropTypes.func, // new
+    onFileSelect: PropTypes.func,
 };
 
 /* ---------- Icons ---------- */
