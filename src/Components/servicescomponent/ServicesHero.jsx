@@ -55,7 +55,7 @@ export default function ServicesHero({ title = "Services", image, className = ""
 
                 {/* Content */}
                 <div className="relative z-10 h-full flex items-center">
-                    <div className="w-full px-6 md:px-10 lg:px-12">
+                    <div className="w-full px-6 md:px-10 lg:px-12 flex flex-col justify-center items-center">
                         <motion.h1
                             variants={itemV}
                             className="text-white font-serif font-bold text-3xl md:text-5xl"
