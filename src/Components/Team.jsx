@@ -13,7 +13,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
  */
 
 // ---- Local images (swap these for your assets) ----
-import T1 from "../assets/gallery/team2.jpg";
+import T1 from "../assets/gallery/team1.jpg";
 import T2 from "../assets/gallery/team2.jpg";
 import T3 from "../assets/gallery/team2.jpg";
 
@@ -182,7 +182,7 @@ export default function Team({ title, subtitle, members }) {
                                     <img
                                         src={selected.photo}
                                         alt={`${selected.name} large portrait`}
-                                        className="w-full h-56 object-cover rounded-xl"
+                                        className="w-full h-64 object-cover rounded-xl"
                                     />
                                 </div>
 

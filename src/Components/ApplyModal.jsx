@@ -28,6 +28,7 @@ export default function ApplyModal({ open, onClose, roles }) {
     const [submitting, setSubmitting] = useState(false);
     const [submitOK, setSubmitOK] = useState(false);
     const [submitErr, setSubmitErr] = useState("");
+    const [errors, setErrors] = useState({}); // field errors from API
 
     // Résumé preview state
     const [resumeFile, setResumeFile] = useState(null);
@@ -81,11 +82,18 @@ export default function ApplyModal({ open, onClose, roles }) {
         setFileInputKey((k) => k + 1); // reset native input
     };
 
+    const getErr = (name) => {
+        const v = errors?.[name];
+        if (!v) return "";
+        return Array.isArray(v) ? v[0] : String(v);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
         setSubmitErr("");
         setSubmitOK(false);
+        setErrors({});
 
         try {
             const fd = new FormData(e.currentTarget);
@@ -102,17 +110,18 @@ export default function ApplyModal({ open, onClose, roles }) {
             // name, email, phone, role, linkedin, website, cover, resume, agree
             const res = await fetch(API_URL, {
                 method: "POST",
-                body: fd, // let browser set multipart/form-data boundary
+                body: fd, // browser sets multipart/form-data boundary
             });
 
             let payload = null;
             try {
                 payload = await res.json();
             } catch {
-                /* ignore non-JSON */
+                // ignore non-JSON
             }
 
             if (!res.ok) {
+                if (payload?.errors) setErrors(payload.errors); // <-- store field errors
                 const msg =
                     (payload && (payload.message || payload.error)) ||
                     `Request failed (${res.status})`;
@@ -121,11 +130,12 @@ export default function ApplyModal({ open, onClose, roles }) {
 
             // success!
             setSubmitOK(true);
-
-            // reset form + file
+            setSubmitErr("");
+            setErrors({});
             e.currentTarget.reset();
             clearResume();
         } catch (err) {
+            setSubmitOK(false);
             setSubmitErr(err?.message || "Failed to submit application.");
         } finally {
             setSubmitting(false);
@@ -212,15 +222,31 @@ export default function ApplyModal({ open, onClose, roles }) {
                                     placeholder="Jane Doe"
                                     required
                                     icon={UserIcon}
+                                    error={getErr("name")}
                                 />
                             </motion.div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <motion.div variants={fieldV}>
-                                    <Input name="email" label="Email" type="email" placeholder="jane@domain.com" required icon={MailIcon} />
+                                    <Input
+                                        name="email"
+                                        label="Email"
+                                        type="email"
+                                        placeholder="jane@domain.com"
+                                        required
+                                        icon={MailIcon}
+                                        error={getErr("email")}
+                                    />
                                 </motion.div>
                                 <motion.div variants={fieldV}>
-                                    <Input name="phone" label="Phone" type="tel" placeholder="+1 (555) 555-5555" icon={PhoneIcon} />
+                                    <Input
+                                        name="phone"
+                                        label="Phone"
+                                        type="tel"
+                                        placeholder="+233 55 000 0000"
+                                        icon={PhoneIcon}
+                                        error={getErr("phone")}
+                                    />
                                 </motion.div>
                             </div>
 
@@ -231,6 +257,7 @@ export default function ApplyModal({ open, onClose, roles }) {
                                     icon={BriefcaseIcon}
                                     required
                                     options={(roles?.length ? roles : defaultRoles).map((r) => ({ value: r, label: r }))}
+                                    error={getErr("role")}
                                 />
                             </motion.div>
 
@@ -247,6 +274,7 @@ export default function ApplyModal({ open, onClose, roles }) {
                                         type="url"
                                         placeholder="https://linkedin.com/in/you"
                                         icon={LinkIcon}
+                                        error={getErr("linkedin")}
                                     />
                                 </motion.div>
                                 <motion.div variants={fieldV}>
@@ -256,6 +284,7 @@ export default function ApplyModal({ open, onClose, roles }) {
                                         type="url"
                                         placeholder="https://your-site.com"
                                         icon={GlobeIcon}
+                                        error={getErr("website")}
                                     />
                                 </motion.div>
                             </div>
@@ -271,6 +300,7 @@ export default function ApplyModal({ open, onClose, roles }) {
                                     help="Optional but recommended."
                                     onFileSelect={handleResumeSelect}
                                     disabled={submitting}
+                                    error={getErr("resume")}
                                 />
                             </motion.div>
 
@@ -279,9 +309,7 @@ export default function ApplyModal({ open, onClose, roles }) {
                                 <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                                         <div className="min-w-0">
-                                            <p className="text-sm font-semibold text-gray-900 truncate">
-                                                {resumeFile.name}
-                                            </p>
+                                            <p className="text-sm font-semibold text-gray-900 truncate">{resumeFile.name}</p>
                                             <p className="text-xs text-gray-600">
                                                 {formatBytes(resumeFile.size)} · {resumeFile.type || "Unknown type"}
                                             </p>
@@ -310,16 +338,34 @@ export default function ApplyModal({ open, onClose, roles }) {
                             )}
 
                             <motion.div variants={fieldV}>
-                                <Textarea name="cover" label="Cover Letter" placeholder="Why are you a great fit?" rows={5} />
+                                <Textarea
+                                    name="cover"
+                                    label="Cover Letter"
+                                    placeholder="Why are you a great fit?"
+                                    rows={5}
+                                    error={getErr("cover")}
+                                />
                             </motion.div>
 
                             {/* Consent + Actions */}
                             <motion.div className="flex items-center gap-3" variants={fieldV}>
-                                <input id="agree" name="agree" type="checkbox" required className="h-4 w-4 rounded border-gray-300" />
+                                <input
+                                    id="agree"
+                                    name="agree"
+                                    type="checkbox"
+                                    required
+                                    className={`h-4 w-4 rounded border-gray-300 ${getErr("agree") ? "border-rose-400 ring-rose-400" : ""}`}
+                                    aria-invalid={Boolean(getErr("agree")) || undefined}
+                                />
                                 <label htmlFor="agree" className="text-sm text-gray-600">
                                     I agree to the processing of my personal data.
                                 </label>
                             </motion.div>
+                            {getErr("agree") ? (
+                                <p className="mt-[-0.25rem] text-xs text-rose-600" role="alert">
+                                    {getErr("agree")}
+                                </p>
+                            ) : null}
 
                             <motion.div className="flex items-center gap-3 pt-2" variants={fieldV}>
                                 <motion.button
@@ -373,6 +419,9 @@ SectionTitle.propTypes = { children: PropTypes.node.isRequired };
 const baseInput =
     "w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-inner shadow-black/0 hover:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500/50 transition";
 
+const errorInput =
+    "border-rose-300 bg-rose-50 focus:ring-rose-400/40 focus:border-rose-400";
+
 const Label = ({ htmlFor, children, required }) => (
     <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-medium text-gray-800">
         {children} {required && <span className="text-amber-600">*</span>}
@@ -388,7 +437,7 @@ const WithIcon = ({ icon: Icon }) => (
 WithIcon.propTypes = { icon: PropTypes.elementType.isRequired };
 
 const Input = React.forwardRef(function Input(
-    { name, label, type = "text", placeholder, required = false, icon },
+    { name, label, type = "text", placeholder, required = false, icon, error },
     ref
 ) {
     return (
@@ -403,10 +452,13 @@ const Input = React.forwardRef(function Input(
                     type={type}
                     placeholder={placeholder}
                     required={required}
-                    className={`${baseInput} ${icon ? "pl-10" : ""}`}
-                    aria-required={required || undefined}
+                    aria-invalid={Boolean(error) || undefined}
+                    className={`${baseInput} ${icon ? "pl-10" : ""} ${error ? errorInput : ""}`}
                 />
             </div>
+            {error ? (
+                <p className="mt-1 text-xs text-rose-600" role="alert">{error}</p>
+            ) : null}
         </div>
     );
 });
@@ -417,13 +469,22 @@ Input.propTypes = {
     placeholder: PropTypes.string,
     required: PropTypes.bool,
     icon: PropTypes.elementType,
+    error: PropTypes.string,
 };
 
-function Textarea({ name, label, placeholder, rows = 4 }) {
+function Textarea({ name, label, placeholder, rows = 4, error }) {
     return (
         <div>
             <Label htmlFor={name}>{label}</Label>
-            <textarea id={name} name={name} rows={rows} placeholder={placeholder} className={`${baseInput} resize-y`} />
+            <textarea
+                id={name}
+                name={name}
+                rows={rows}
+                placeholder={placeholder}
+                aria-invalid={Boolean(error) || undefined}
+                className={`${baseInput} resize-y ${error ? errorInput : ""}`}
+            />
+            {error ? <p className="mt-1 text-xs text-rose-600" role="alert">{error}</p> : null}
         </div>
     );
 }
@@ -432,9 +493,10 @@ Textarea.propTypes = {
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     rows: PropTypes.number,
+    error: PropTypes.string,
 };
 
-function Select({ name, label, options, required = false, icon }) {
+function Select({ name, label, options, required = false, icon, error }) {
     return (
         <div>
             <Label htmlFor={name} required={required}>{label}</Label>
@@ -444,8 +506,8 @@ function Select({ name, label, options, required = false, icon }) {
                     id={name}
                     name={name}
                     required={required}
-                    className={`${baseInput} ${icon ? "pl-10" : ""} appearance-none pr-9`}
-                    aria-required={required || undefined}
+                    aria-invalid={Boolean(error) || undefined}
+                    className={`${baseInput} ${icon ? "pl-10" : ""} appearance-none pr-9 ${error ? errorInput : ""}`}
                 >
                     {options.map((o) => (
                         <option key={o.value} value={o.value}>
@@ -457,6 +519,7 @@ function Select({ name, label, options, required = false, icon }) {
                     <ChevronDown className="h-4 w-4" />
                 </span>
             </div>
+            {error ? <p className="mt-1 text-xs text-rose-600" role="alert">{error}</p> : null}
         </div>
     );
 }
@@ -466,9 +529,10 @@ Select.propTypes = {
     options: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string, label: PropTypes.string })).isRequired,
     required: PropTypes.bool,
     icon: PropTypes.elementType,
+    error: PropTypes.string,
 };
 
-function FileDrop({ name, label, help, disabled = false, onFileSelect }) {
+function FileDrop({ name, label, help, disabled = false, onFileSelect, error }) {
     const handleChange = (e) => {
         const file = e.target.files?.[0] || null;
         onFileSelect?.(file);
@@ -479,8 +543,8 @@ function FileDrop({ name, label, help, disabled = false, onFileSelect }) {
             <Label htmlFor={name}>{label}</Label>
             <label
                 htmlFor={name}
-                className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-8 text-center hover:border-amber-400 hover:bg-white transition ${disabled ? "opacity-70 cursor-not-allowed pointer-events-none" : ""
-                    }`}
+                className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-8 text-center hover:border-amber-400 hover:bg-white transition ${error ? "border-rose-300 bg-rose-50" : ""
+                    } ${disabled ? "opacity-70 cursor-not-allowed pointer-events-none" : ""}`}
             >
                 <UploadIcon className="h-6 w-6 text-gray-500 group-hover:text-amber-500" />
                 <div className="text-sm">
@@ -499,6 +563,7 @@ function FileDrop({ name, label, help, disabled = false, onFileSelect }) {
                 />
             </label>
             {help ? <p className="mt-1 text-xs text-gray-500">{help}</p> : null}
+            {error ? <p className="mt-1 text-xs text-rose-600" role="alert">{error}</p> : null}
         </div>
     );
 }
@@ -508,6 +573,7 @@ FileDrop.propTypes = {
     help: PropTypes.string,
     disabled: PropTypes.bool,
     onFileSelect: PropTypes.func,
+    error: PropTypes.string,
 };
 
 /* ---------- Icons ---------- */
