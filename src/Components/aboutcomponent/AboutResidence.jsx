@@ -164,7 +164,7 @@ export default function AboutResidence({ className = "" }) {
                         </>
                     }
                     ctaLabel="View Day Programs"
-                    href="#"
+                    href="/day-habilitation"
                 />
             </motion.div>
         </section>
