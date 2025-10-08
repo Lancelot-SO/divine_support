@@ -15,7 +15,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 // ---- Local images (swap these for your assets) ----
 import T1 from "../assets/gallery/team1.jpg";
 import T2 from "../assets/gallery/team2.jpg";
-import T3 from "../assets/gallery/team2.jpg";
+import T3 from "../assets/gallery/team3.jpg";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -282,7 +282,7 @@ CloseIcon.propTypes = { className: PropTypes.string };
 const defaultTeam = [
     {
         name: "Ava Thompson",
-        role: "Director of Nursing",
+        role: "Chief Executive Officer",
         photo: T1, // local asset
         bio: "Leads care standards and clinical training across all programs.",
 
@@ -296,7 +296,7 @@ const defaultTeam = [
     },
     {
         name: "Priya Desai",
-        role: "Community Programs Lead",
+        role: "Coordinator",
         photo: T3,
         bio: "Builds bridges to inclusive community activities and partnerships.",
 

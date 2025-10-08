@@ -11,7 +11,7 @@ import heroVid1 from "../assets/home/vid1.mp4";
 import heroVid2 from "../assets/home/vid2.mp4";
 
 const slides = [
-    { id: 1, src: heroVid1, title: "Complete Person Centered Program", ctaText: "EXPLORE OUR DDA SERVICES", ctaHref: "/services" },
+    { id: 1, src: heroVid1, title: "Complete Health & Safety needs Because You Deserve The Best", ctaText: "EXPLORE OUR DDA SERVICES", ctaHref: "/services" },
     { id: 2, src: heroVid2, title: "Person-Centered Supports that build Community, Dignity, and Independence", ctaText: "Explore Our Services", ctaHref: "/services" },
 ];
 

@@ -56,7 +56,7 @@ export default function AboutVission({ imageSrc }) {
                         We don't see your disabilities as inabilities.
 
                         <br className="hidden sm:block" />
-                        <span className="block">We build on your strengths and work on you weakness</span>
+                        <span className="block">We build on your strengths and work on your weaknesses</span>
                     </h1>
                 </motion.div>
 
@@ -67,8 +67,8 @@ export default function AboutVission({ imageSrc }) {
                         {/* Card 1 */}
                         <FeatureCard
                             icon={<HandsIcon className="h-11 w-11 shrink-0 text-amber-500" />}
-                            title="Compassionate Care"
-                            text="We treat every individual with dignity, respect, and kindness, creating safe and supportive environments where they can thrive."
+                            title="Who We Serve"
+                            text="We serve individuals from ages 18 and older. We are dedicated to one to one(1:1), Small  Groups(1:4) and Large Groups (1:6)"
                         />
 
                         {/* Card 2 */}

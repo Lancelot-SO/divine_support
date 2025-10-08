@@ -177,8 +177,8 @@ export default function ServicesSolution() {
                     </Reveal>
                     <Reveal delay={80}>
                         <h2 className="mt-3 text-3xl/tight sm:text-4xl/tight lg:text-5xl/tight font-extrabold text-gray-900">
-                            Complete Health Solutions Because
-                            <br className="hidden sm:block" /> You Deserve The Best
+                            Complete Health & Safety Needs Because You Deserve The Best
+
                         </h2>
                     </Reveal>
                 </div>
