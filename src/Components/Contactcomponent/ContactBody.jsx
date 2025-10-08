@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import leftImg from "../../assets/contact/leftImg.png";
 import rightImg from "../../assets/contact/rightImg.png";
+import { Mail } from "lucide-react";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -174,33 +175,73 @@ export default function ContactBody({ leftImage, rightImage }) {
                             </div>
                         </div>
                     </motion.div>
-
                     {/* Contacts */}
                     <motion.div
                         variants={cardV}
                         whileHover={{ y: -4 }}
-                        className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+                        className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md focus-within:shadow-md"
                     >
                         <div className="flex items-start gap-4">
                             <span className="grid h-12 w-12 place-items-center rounded-xl bg-[#D6E8EB] text-slate-700">
                                 <ContactIcon className="h-5 w-5" />
                             </span>
-                            <div>
-                                <h3 className="font-semibold text-gray-900">Contacts:</h3>
-                                <ul className="mt-1 space-y-1 text-sm text-gray-700">
+
+                            <div className="min-w-0">
+                                <h3 className="font-semibold text-gray-900">Contacts</h3>
+
+                                <ul className="mt-2 space-y-1.5 text-sm text-gray-700">
+                                    {/* Email */}
                                     <li className="flex items-center gap-2">
-                                        <PhoneIcon className="h-4 w-4" /> Phone : +1 (443) 248-5410
+                                        <Mail className="h-4 w-4 shrink-0" />
+                                        <a
+                                            href="mailto:operations@divinesupportservicesinc.org"
+                                            className="truncate underline decoration-slate-300 underline-offset-4 transition hover:decoration-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300 rounded"
+                                            aria-label="Email operations at Divine Support Services"
+                                        >
+                                            operations@divinesupportservicesinc.org
+                                        </a>
                                     </li>
+
+                                    {/* Phone 1 */}
                                     <li className="flex items-center gap-2">
-                                        <PhoneIcon className="h-4 w-4" /> Phone : +1 (856) 879-4171
+                                        <PhoneIcon className="h-4 w-4 shrink-0" />
+                                        <a
+                                            href="tel:+14432485410"
+                                            className="transition hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-slate-300 rounded"
+                                            aria-label="Call +1 (443) 248-5410"
+                                        >
+                                            +1 (443) 248-5410
+                                        </a>
                                     </li>
+
+                                    {/* Phone 2 */}
                                     <li className="flex items-center gap-2">
-                                        <PhoneIcon className="h-4 w-4" /> Phone : +1 (410) 905-7473
+                                        <PhoneIcon className="h-4 w-4 shrink-0" />
+                                        <a
+                                            href="tel:+18568794171"
+                                            className="transition hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-slate-300 rounded"
+                                            aria-label="Call +1 (856) 879-4171"
+                                        >
+                                            +1 (856) 879-4171
+                                        </a>
+                                    </li>
+
+                                    {/* Phone 3 */}
+                                    <li className="flex items-center gap-2">
+                                        <PhoneIcon className="h-4 w-4 shrink-0" />
+                                        <a
+                                            href="tel:+14109057473"
+                                            className="transition hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-slate-300 rounded"
+                                            aria-label="Call +1 (410) 905-7473"
+                                        >
+                                            +1 (410) 905-7473
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </motion.div>
+
                 </div>
 
                 {/* Form card */}

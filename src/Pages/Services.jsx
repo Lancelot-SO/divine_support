@@ -11,7 +11,7 @@ import ServicesAssessment from '../Components/servicescomponent/ServicesAssessme
 const Services = () => {
     return (
         <div>
-            <ServicesHero title="Services" image={heroImg} />
+            <ServicesHero title="Complete Person Centered Services" image={heroImg} />
             <ServicesSolution />
             <ServicesAssessment />
             <AboutVission imageSrc={vission} />
