@@ -117,8 +117,8 @@ export default function AboutVission({ imageSrc }) {
 
                             <div className="mt-2">
                                 <div className="flex items-baseline gap-2">
-                                    <motion.p className="text-4xl font-extrabold tracking-tight text-gray-900" initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease }}>
-                                        2,000+
+                                    <motion.p className="text-2xl font-extrabold tracking-tight text-gray-900" initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease }}>
+                                        24 hours, 7 days a week of service delivery.
                                     </motion.p>
                                 </div>
                                 <p className="mt-1 text-sm font-medium text-gray-700">Hours of Care Delivered Monthly</p>

@@ -187,7 +187,7 @@ export default function Navbar() {
             <ApplyModal
                 open={applyOpen}
                 onClose={() => setApplyOpen(false)}
-                roles={["Registered Nurse", "Behavioral Specialist", "Program Coordinator", "Caregiver"]}
+                roles={["Delegating Nurse", "House Manager", "CMT", "DSP"]}
                 onSubmit={(data) => {
                     console.log("Application:", data);
                     setApplyOpen(false);

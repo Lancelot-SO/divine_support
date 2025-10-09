@@ -7,12 +7,10 @@ const ease = [0.22, 1, 0.36, 1];
 const API_URL = "https://api.dss-inc.org/api/job-application";
 
 const defaultRoles = [
-    "Frontend Developer",
-    "Backend Developer",
-    "Full Stack Developer",
-    "UI/UX Designer",
-    "Project Manager",
-    "QA Engineer",
+    "Delegating Nurse",
+    "House Manager",
+    "CMT",
+    "DSP",
 ];
 
 const formV = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -90,19 +88,23 @@ export default function ApplyModal({ open, onClose, roles }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Keep reference BEFORE any await to avoid pooled-event nulling
+        const formEl = e.currentTarget;
+
         setSubmitting(true);
         setSubmitErr("");
         setSubmitOK(false);
         setErrors({});
 
         try {
-            const fd = new FormData(e.currentTarget);
+            const fd = new FormData(formEl);
 
             // Force agree -> "1" or "0"
-            const agreed = e.currentTarget.elements.agree?.checked === true;
+            const agreed = formEl.elements.agree?.checked === true;
             fd.set("agree", agreed ? "1" : "0");
 
-            // Ensure selected file is used (if you keep separate preview state)
+            // Ensure selected file is used (if keeping separate preview state)
             if (resumeFile) {
                 fd.set("resume", resumeFile);
             }
@@ -132,7 +134,7 @@ export default function ApplyModal({ open, onClose, roles }) {
             setSubmitOK(true);
             setSubmitErr("");
             setErrors({});
-            e.currentTarget.reset();
+            formEl?.reset();   // safe: using saved form reference
             clearResume();
         } catch (err) {
             setSubmitOK(false);

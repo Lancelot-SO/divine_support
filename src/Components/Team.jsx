@@ -182,8 +182,9 @@ export default function Team({ title, subtitle, members }) {
                                     <img
                                         src={selected.photo}
                                         alt={`${selected.name} large portrait`}
-                                        className="w-full h-64 object-cover rounded-xl"
+                                        className="w-full h-auto object-cover rounded-xl"
                                     />
+
                                 </div>
 
                                 <div className="mt-5">
