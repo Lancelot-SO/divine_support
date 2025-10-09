@@ -121,7 +121,7 @@ export default function AboutVission({ imageSrc }) {
                                         24 hours, 7 days a week of service delivery.
                                     </motion.p>
                                 </div>
-                                <p className="mt-1 text-sm font-medium text-gray-700">Hours of Care Delivered Monthly</p>
+                                {/* <p className="mt-1 text-sm font-medium text-gray-700">Hours of Care Delivered Monthly</p> */}
                                 <p className="mt-3 text-sm text-gray-600">
                                     By experienced and dedicated staff, committed to empowering independence and meaningful community life.
                                 </p>

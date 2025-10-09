@@ -16,6 +16,10 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 import T1 from "../assets/gallery/team1.jpg";
 import T2 from "../assets/gallery/team2.jpg";
 import T3 from "../assets/gallery/team3.jpg";
+import T4 from "../assets/gallery/team4.jpg";
+import T5 from "../assets/gallery/team5.jpg";
+
+
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -301,5 +305,17 @@ const defaultTeam = [
         photo: T3,
         bio: "Builds bridges to inclusive community activities and partnerships.",
 
+    },
+    {
+        name: "John Doe",
+        role: "Coordinator",
+        photo: T4,
+        bio: "Builds bridges to inclusive community activities and partnerships.",
+    },
+    {
+        name: "James Hans",
+        role: "Coordinator",
+        photo: T5,
+        bio: "Builds bridges to inclusive community activities and partnerships.",
     },
 ];
