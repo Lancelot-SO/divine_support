@@ -90,7 +90,7 @@ export default function Hero() {
         dots: false,
         infinite: true,
         speed: 1000,
-        autoplay: false,          // we control it
+        autoplay: true,          // we control it
         waitForAnimate: true,
         slidesToShow: 1,
         slidesToScroll: 1,

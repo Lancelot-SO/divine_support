@@ -18,6 +18,7 @@ import T2 from "../assets/gallery/team2.jpg";
 import T3 from "../assets/gallery/team3.jpg";
 import T4 from "../assets/gallery/team4.jpg";
 import T5 from "../assets/gallery/team5.jpg";
+import T6 from "../assets/gallery/team6.jpg";
 
 
 
@@ -316,6 +317,12 @@ const defaultTeam = [
         name: "James Hans",
         role: "Coordinator",
         photo: T5,
+        bio: "Builds bridges to inclusive community activities and partnerships.",
+    },
+    {
+        name: "Niyi Oluyinka",
+        role: "Program Coordinator",
+        photo: T6,
         bio: "Builds bridges to inclusive community activities and partnerships.",
     },
 ];
