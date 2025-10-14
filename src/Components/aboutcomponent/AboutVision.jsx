@@ -53,7 +53,7 @@ export default function AboutVission({ imageSrc }) {
                 <motion.div className="text-center mb-12 md:mb-16" variants={headerV}>
                     <p className="text-amber-500 font-semibold tracking-wide uppercase text-sm">Why Choose Us</p>
                     <h1 className="mt-3 text-2xl/tight sm:text-4xl/tight lg:text-5xl/tight font-medium text-gray-900">
-                        We don't see your disabilities as inabilities.
+                        We don't see disabilities as inabilities.
 
                         <br className="hidden sm:block" />
                         <span className="block">We build on your strengths and work on your weaknesses</span>

@@ -80,6 +80,10 @@ export default function Footer() {
                                 title="Baltimore Office"
                                 address={["3502 W. Rogers Avenue, Suite 8,", "Baltimore, MD 21215"]}
                             />
+                            <OfficeCard
+                                title="Office hours"
+                                address={["Monday - Friday", "9:00am - 5:00pm"]}
+                            />
                         </div>
                     </div>
 

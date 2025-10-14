@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
-import leftImg from "../../assets/contact/leftImg.png";
-import rightImg from "../../assets/contact/rightImg.png";
+import leftImg from "../../assets/contact/left.jpg";
+import rightImg from "../../assets/contact/right.jpg";
 import { Mail } from "lucide-react";
 
 const ease = [0.22, 1, 0.36, 1];
