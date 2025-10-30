@@ -294,8 +294,8 @@ const defaultTeam = [
 
     },
     {
-        name: "Marcus Reed",
-        role: "Behavioral Specialist",
+        name: "Francisca Addy",
+        role: "Program Director",
         photo: T2,
         bio: "Designs supportive plans focused on safety, dignity, and growth.",
 
