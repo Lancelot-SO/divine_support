@@ -1,23 +1,13 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unescaped-entities */
+// eslint-disable-next-line no-unused-vars
 import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 
-/**
- * Team.jsx
- * - Avatar image per member (local imports or URLs)
- * - 3 social icons: LinkedIn, X/Twitter, Instagram
- * - Staggered reveal, hover lift, 3D tilt, animated halo
- * - NEW: Right-side sliding panel with larger photo & details on card click
- */
 
 // ---- Local images (swap these for your assets) ----
 import T1 from "../assets/gallery/team1.jpg";
 import T2 from "../assets/gallery/team2.jpg";
-import T3 from "../assets/gallery/team3.jpg";
 import T4 from "../assets/gallery/team4.jpg";
-import T5 from "../assets/gallery/team5.jpg";
 import T6 from "../assets/gallery/team6.jpg";
 
 
@@ -95,51 +85,37 @@ export default function Team({ title, subtitle, members }) {
                     </motion.div>
 
                     {/* Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {/* Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12 justify-items-center">
                         {team.map((m) => (
-                            <TiltCard key={m.name}>
-                                <motion.article
-                                    variants={cardV}
-                                    whileHover={{ y: -6 }}
-                                    transition={{ type: "spring", stiffness: 220, damping: 18 }}
-                                    className="group relative rounded-2xl p-[1px] bg-gradient-to-b from-amber-400/60 via-amber-200/40 to-transparent cursor-pointer"
-                                    role="button"
-                                    tabIndex={0}
-                                    onClick={() => setSelected(m)}
-                                    onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setSelected(m)}
-                                >
-                                    <div className="relative rounded-2xl bg-white p-6 pt-14 shadow-sm">
-                                        {/* Floating avatar */}
-                                        <motion.div
-                                            className="absolute -top-10 left-1/2 -translate-x-1/2"
-                                            animate={{ y: [0, -3, 0] }}
-                                            transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
-                                        >
-                                            <div className="relative">
-                                                <div className="absolute -inset-1 rounded-full bg-amber-500/20 blur-md transition-opacity duration-300 group-hover:opacity-90" />
-                                                <img
-                                                    src={m.photo}
-                                                    alt={`${m.name} portrait`}
-                                                    className="relative h-20 w-20 rounded-full object-cover ring-4 ring-white shadow-md"
-                                                    loading="lazy"
-                                                />
-                                            </div>
-                                        </motion.div>
+                            <motion.div
+                                key={m.name}
+                                variants={cardV}
+                                whileHover={{ scale: 1.03 }}
+                                transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                                className="relative flex flex-col items-center bg-white rounded-2xl shadow-lg overflow-hidden w-full max-w-xs cursor-pointer"
+                                onClick={() => setSelected(m)}
+                            >
+                                {/* Photo */}
+                                <div className="w-full h-[360px] bg-gray-100 overflow-hidden">
+                                    <img
+                                        src={m.photo}
+                                        alt={`${m.name} portrait`}
+                                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        loading="lazy"
+                                    />
+                                </div>
 
-                                        {/* Content */}
-                                        <div className="text-center mt-6">
-                                            <h3 className="text-lg font-semibold text-gray-900">{m.name}</h3>
-                                            <p className="text-amber-600 text-sm font-medium">{m.role}</p>
-                                            {m.bio ? (
-                                                <p className="mt-3 text-sm text-gray-600 leading-relaxed line-clamp-3">{m.bio}</p>
-                                            ) : null}
-
-                                        </div>
-                                    </div>
-                                </motion.article>
-                            </TiltCard>
+                                {/* Name and Role Section */}
+                                <div className="w-full text-center bg-amber-500 py-3">
+                                    <h3 className="text-white text-lg font-semibold">{m.name}</h3>
+                                    <p className="text-white/90 text-sm font-medium">{m.role}</p>
+                                </div>
+                            </motion.div>
                         ))}
                     </div>
+
+
                 </div>
             </motion.section>
 
@@ -301,28 +277,15 @@ const defaultTeam = [
 
     },
     {
-        name: "Priya Desai",
-        role: "Coordinator",
-        photo: T3,
+        name: "Niyi Oluyinka",
+        role: "Program Coordinator",
+        photo: T6,
         bio: "Builds bridges to inclusive community activities and partnerships.",
-
     },
     {
         name: "John Doe",
         role: "Coordinator",
         photo: T4,
-        bio: "Builds bridges to inclusive community activities and partnerships.",
-    },
-    {
-        name: "James Hans",
-        role: "Coordinator",
-        photo: T5,
-        bio: "Builds bridges to inclusive community activities and partnerships.",
-    },
-    {
-        name: "Niyi Oluyinka",
-        role: "Program Coordinator",
-        photo: T6,
         bio: "Builds bridges to inclusive community activities and partnerships.",
     },
 ];
