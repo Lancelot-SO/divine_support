@@ -263,29 +263,29 @@ CloseIcon.propTypes = { className: PropTypes.string };
 /* ---------------- Default data ---------------- */
 const defaultTeam = [
     {
-        name: "Ava Thompson",
+        name: "Sule Salako",
         role: "Chief Executive Officer",
         photo: T1, // local asset
-        bio: "Leads care standards and clinical training across all programs.",
+        bio: "Provides visionary leadership and strategic direction, guiding the organization toward sustainable growth, innovation, and meaningful community impact.",
 
     },
     {
         name: "Francisca Addy",
         role: "Program Director",
         photo: T2,
-        bio: "Designs supportive plans focused on safety, dignity, and growth.",
+        bio: "Leads the design and execution of impactful programs, ensuring every initiative promotes empowerment, inclusivity, and long-term social progress.",
 
     },
     {
         name: "Niyi Oluyinka",
         role: "Program Coordinator",
         photo: T6,
-        bio: "Builds bridges to inclusive community activities and partnerships.",
+        bio: "Oversees program delivery with a focus on innovation and inclusion, ensuring every initiative strengthens community engagement and measurable impact",
     },
     {
-        name: "John Doe",
-        role: "Coordinator",
+        name: "Oladimeji Odetola",
+        role: "Residential Coordinator",
         photo: T4,
-        bio: "Builds bridges to inclusive community activities and partnerships.",
+        bio: "Coordinates residential operations with care and precision, creating safe, empowering environments where residents feel supported to grow and thrive.",
     },
 ];
