@@ -271,7 +271,7 @@ const defaultTeam = [
     },
     {
         name: "Francisca Addy",
-        role: "Program Director",
+        role: "Director of Operations",
         photo: T2,
         bio: "Leads the design and execution of impactful programs, ensuring every initiative promotes empowerment, inclusivity, and long-term social progress.",
 
