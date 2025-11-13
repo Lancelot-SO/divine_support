@@ -91,7 +91,12 @@ export default function Footer() {
                     <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-12 md:items-start">
                         {/* Logo */}
                         <motion.div variants={itemV} className="md:col-span-3">
-                            <img src={logo} alt="Divine Support Services Inc." className="h-24 w-auto object-contain" />
+                            <img src={logo} alt="Divine Support Services Inc." className="h-24 w-auto object-contain mb-4" />
+                            <div className="leading-tight md:hidden lg:block">
+                                <div className="font-serif text-[32px]  tracking-wide text-gray-900 font-extrabold mb-1">DIVINE</div>
+                                <div className="text-[16px] tracking-widest text-gray-900">SUPPORT SERVICES INC.</div>
+                                <div className="text-[32px] font-bold  tracking-widest text-gray-900">MARYLAND</div>
+                            </div>
                         </motion.div>
 
                         {/* Community */}
