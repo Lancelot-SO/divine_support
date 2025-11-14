@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { MapPin, Headphones, ArrowUpRight } from "lucide-react";
 
 // Swap to your actual logo path
-import logo from "../assets/logo.png";
+import logo from "../assets/logo2.png";
 
 const ease = [0.22, 1, 0.36, 1];
 

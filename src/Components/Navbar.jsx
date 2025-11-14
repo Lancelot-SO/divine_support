@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo2.png";
 import ApplyModal from "./ApplyModal";
 
 // ⬇️ Adjust this path to where you saved ApplyModal.jsx
@@ -61,11 +61,11 @@ export default function Navbar() {
                 <div className="flex items-center justify-between px-4 py-3 md:px-6">
                     {/* Left: logo */}
                     <NavLink to="/" className="flex items-center gap-3 shrink-0" aria-label="Divine Support Services Inc.">
-                        <img src={logo} alt="logo" className="h-20 w-20" />
+                        <img src={logo} alt="logo" className="h-20 w-20 object-center" />
                         <div className="leading-tight md:hidden lg:block">
-                            <div className="font-serif md:text-[32px] text-sm tracking-wide text-gray-900 font-extrabold mb-1">DIVINE</div>
-                            <div className="text-[16px] tracking-widest text-gray-900">SUPPORT SERVICES INC.</div>
-                            <div className="md:text-[32px] font-bold text-sm tracking-widest text-gray-900">MARYLAND</div>
+                            <div className="font-serif md:text-[32px] text-sm tracking-wide text-[#6ABCE8] font-extrabold mb-1">DIVINE</div>
+                            <div className="text-[16px] tracking-widest text-[#6ABCE8]">SUPPORT SERVICES INC.</div>
+                            <div className="md:text-[32px] font-bold text-sm tracking-widest text-[#6ABCE8]">MARYLAND</div>
                         </div>
                     </NavLink>
 
